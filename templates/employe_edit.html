@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Employee</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .container:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+            color: #4a90e2;
+            margin-bottom: 25px;
+            font-size: 2rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        label {
+            font-weight: 600;
+            color: #333;
+        }
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+            outline: none;
+        }
+        textarea {
+            resize: none;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #4a90e2;
+            color: #fff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #357abf;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.85rem;
+            margin-top: -5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Edit Employee: {{ employe.name }}</h2>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="name" value="{{ employe.name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" value="{{ employe.email }}" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone_number">Phone Number</label>
+                    <input type="text" name="phone_number" value="{{ employe.phone_number }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="emp_id">Employee ID</label>
+                    <input type="text" name="emp_id" value="{{ employe.emp_id }}" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea name="address" required>{{ employe.address }}</textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date_of_birth">Date of Birth</label>
+                    <input type="date" name="date_of_birth" value="{{ employe.date_of_birth|date:'Y-m-d' }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="joining_date">Joining Date</label>
+                    <input type="date" name="joining_date" value="{{ employe.joining_date|date:'Y-m-d' }}" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="mother_name">Mother's Name</label>
+                <input type="text" name="mother_name" value="{{ employe.mother_name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="father_name">Father's Name</label>
+                <input type="text" name="father_name" value="{{ employe.father_name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="base_salary">Base Salary</label>
+                <input type="number" name="base_salary" value="{{ employe.base_salary }}" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="allowances">Allowances</label>
+                <input type="number" name="allowances" value="{{ employe.allowances }}" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label for="authorized">Authorized</label>
+                <input type="checkbox" name="authorized" {% if employe.authorized %}checked{% endif %}>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="{% url 'employe-detail' pk=employe.pk %}" class="btn btn-secondary">Back to Employee Details</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

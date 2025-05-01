@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f4f7fc;
+            padding: 20px;
+        }
+
+        .container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .header-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #343a40;
+            font-weight: bold;
+            flex-grow: 1;
+            margin: 0;
+        }
+
+        .btn-home {
+            font-size: 16px;
+            padding: 8px 15px;
+        }
+
+        .filter-section {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+            font-weight: bold;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .net-salary {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Back to Home Button on the Top Left -->
+    <div class="header-section">
+        <a href="{% url 'home' %}" class="btn btn-primary btn-home">← Back to Home</a>
+        <h2>Salary Details</h2>
+    </div>
+
+    <div class="filter-section">
+        <form method="GET">
+            <div class="row">
+                <div class="col-md-5">
+                    <label for="month"><strong>Month:</strong></label>
+                    <select name="month" id="month" class="form-control">
+                        <option value="">All Months</option>
+                        {% for m in months %}
+                            <option value="{{ m }}" {% if selected_month == m|stringformat:"s" %}selected{% endif %}>{{ m }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <label for="year"><strong>Year:</strong></label>
+                    <select name="year" id="year" class="form-control">
+                        <option value="">All Years</option>
+                        {% for y in years %}
+                            <option value="{{ y }}" {% if selected_year == y|stringformat:"s" %}selected{% endif %}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a href="{% url 'employe_salary_detail' %}" class="btn btn-secondary ml-2">Reset</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Month</th>
+                    <th>Base Salary</th>
+                    <th>Allowances</th>
+                    <th>Bonus</th>
+                    <th>Overtime</th>
+                    <th>Overtime Rate</th>
+                    <th>Gross Salary</th>
+                    <th>Tax Deductions</th>
+                    <th>Other Deductions</th>
+                    <th>Absent Deductions</th>
+                    <th>Net Salary</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for salary in salary_detail %}
+                <tr>
+                    <td>{{ salary.employee.name }}</td>
+                    <td>{{ salary.month }}/{{ salary.year }}</td>
+                    <td>₹{{ salary.base_salary }}</td>
+                    <td>₹{{ salary.allowances }}</td>
+                    <td>₹{{ salary.bonus }}</td>
+                    <td class="overtime" data-overtime="{{ salary.overtime_hours }}">{{ salary.overtime_hours }}</td>
+                    <td>₹{{ salary.overtime_rate }}</td>
+                    <td>₹{{ salary.gross_salary }}</td>
+                    <td>₹{{ salary.tax_deductions }}</td>
+                    <td>₹{{ salary.other_deductions }}</td>
+                    <td>₹{{ salary.absence_deduction }}</td>
+                    <td class="net-salary">₹{{ salary.net_salary }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function formatOvertime(decimalHours) {
+        if (!decimalHours || isNaN(decimalHours)) return "0h 0m 0s";
+
+        let totalSeconds = Math.round(decimalHours * 3600);
+        let hours = Math.floor(totalSeconds / 3600);
+        let minutes = Math.floor((totalSeconds % 3600) / 60);
+        let seconds = totalSeconds % 60;
+
+        return `${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let overtimeCells = document.querySelectorAll(".overtime");
+
+        overtimeCells.forEach(cell => {
+            let overtimeValue = parseFloat(cell.getAttribute("data-overtime").trim());
+            cell.innerText = formatOvertime(overtimeValue);
+        });
+    });
+</script>
+
+</body>
+</html>

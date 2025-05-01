@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Employee Attendance List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+        .container {
+            padding: 30px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .table-responsive {
+            margin-top: 20px;
+            flex-grow: 1;
+        }
+        .table thead th {
+            vertical-align: middle;
+            text-align: center;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+        }
+        .table tbody tr:hover {
+            background-color: #eef5ff;
+            transition: 0.3s;
+        }
+        .table td, .table th {
+            vertical-align: middle;
+            text-align: center;
+        }
+        .heading {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .footer {
+            margin-top: auto;
+            padding: 10px 0;
+            text-align: left;
+        }
+        .back-icon {
+            padding: 10px;
+            font-size: 1.8em;
+            color: #007bff;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .back-icon:hover {
+            color: #0056b3;
+        }
+        .form-inline .form-control {
+            width: auto;
+            flex: 1 1 auto;
+        }
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        .filter-container .input-group {
+            width: 300px;
+        }
+        .btn-custom {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .btn-custom:hover {
+            background: #0056b3;
+        }
+        .shadow-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    
+<div class="container">
+    <div class="footer">
+        <i class="fas fa-arrow-left back-icon" onclick="location.href='/'"></i>
+    </div>
+    <h2 class="heading">Employee Attendance Records</h2>
+    <div class="filter-container">
+        <form method="get" class="input-group shadow-box">
+            <input type="date" name="attendance_date" class="form-control" value="{{ date_filter }}">
+            <div class="input-group-append">
+                <button class="btn btn-custom" type="submit"><i class="fas fa-calendar-alt"></i> Filter</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Employee ID</th>
+                    <th>Attendance Date</th>
+                    <th>Status</th>
+                    <th>Check-in Time</th>
+                    <th>Check-out Time</th>
+                    <th>Stayed Time</th>
+                    <th>Over Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attendance in employee_attendance_data %}
+                <tr>
+                    <td>{{ attendance.employe.name }}</td>
+                    <td>{{ attendance.employe.emp_id }}</td>
+                    <td>{{ attendance.date }}</td>
+                    <td>{{ attendance.status }}</td>
+                    <td>{{ attendance.check_in_time|date:"h:i:s A" }}</td>
+                    <td>{{ attendance.check_out_time|date:"h:i:s A" }}</td>
+                    <td>
+                        {% if attendance.check_in_time and attendance.check_out_time %}
+                            {{ attendance.calculate_duration }}
+                        {% else %}
+                            Not Checked Out
+                        {% endif %}
+                    </td>
+                    <!-- Corrected Overtime Column -->
+                   <td class="overtime" data-overtime="{{ attendance.overtime_hours }}">
+                   {{ attendance.overtime_hours }}
+                 </td> 
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No attendance records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function formatOvertime(decimalHours) {
+        if (!decimalHours || isNaN(decimalHours)) return "0h 0m 0s";
+
+        let totalSeconds = Math.round(decimalHours * 3600);
+        let hours = Math.floor(totalSeconds / 3600);
+        let minutes = Math.floor((totalSeconds % 3600) / 60);
+        let seconds = totalSeconds % 60;
+
+        return `${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let overtimeCells = document.querySelectorAll(".overtime");
+
+        overtimeCells.forEach(cell => {
+            let overtimeValue = parseFloat(cell.getAttribute("data-overtime").trim());
+            cell.innerText = formatOvertime(overtimeValue);
+        });
+    });
+</script>
+</body>
+</html>

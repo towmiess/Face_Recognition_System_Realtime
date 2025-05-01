@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <title>Employee Attendance List</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <!-- Sidebar CSS -->
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <style>
+    
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: #343a40;
+    }
+    .container {
+      padding-top: 140px;
+      padding-bottom: 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .heading {
+        position: fixed;
+        top: 0;
+        left: 250px;
+        right: 250px;
+        text-align: center;
+        color: rgb(47, 185, 54);
+        background-color: #a2d5f2;
+        height: 105px;
+        z-index: 1000;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .back-icon {
+      padding: 5px;
+      font-size: 1.5em;
+      color: rgb(181, 208, 237);
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .back-icon:hover {
+      color: rgb(118, 196, 196);
+    }
+    .filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 0 auto;
+      max-width: 100%;
+      padding: 10px 0;
+    }
+    .filter-container .input-group {
+      flex: 1;
+      margin: 5px;
+    }
+    .btn-custom {
+      background-color: rgb(115, 167, 220);
+      color: white;
+    }
+    .btn-custom:hover {
+      background-color: #b3a400;
+    }
+    .table-wrapper {
+      overflow-y: auto;
+      max-height: 500px;
+      margin-top: 20px;
+      border: 1px solid #dee2e6;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead th {
+      position: sticky;
+      top: 0;
+      background-color: rgb(143, 189, 237);
+      color: white;
+      text-align: center;
+      vertical-align: middle;
+      z-index: 10;
+    }
+    .table thead th {
+        vertical-align: top;
+        border-bottom: 2px solid #dee2e6;
+    }
+    tbody tr:hover {
+        background-color:rgb(191, 154, 154); 
+    }
+    
+      tbody td, thead th {
+      text-align: center;
+      vertical-align: middle;
+    }
+    td {
+        background-color: white;
+        }
+
+    .footer {
+      margin-top: auto;
+      padding: 10px 0;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <h2><a href="{% url 'home' %}" style="color: inherit; text-decoration: none;">Dashboard</a></h2>
+    {% if user.is_authenticated %}
+        <a href="{% url 'register_employe' %}"><i class="fas fa-user-plus"></i> Add Employes</a>
+        <a href="{% url 'employe-list' %}"><i class="fas fa-users"></i> Manage Employe</a>
+        <a href="{% url 'upload_face_image' %}"><i class="fas fa-brain"></i> Train Face Data</a>
+        <a href="{% url 'department_list' %}"><i class="fas fa-building"></i> Manage Department</a>
+        <a href="{% url 'salary_list' %}"><i class="fas fa-wallet"></i> Manage Salary</a>
+        <a href="{% url 'leave_list' %}"><i class="fas fa-clipboard-list"></i> Manage Leave</a>
+        <a href="{% url 'camera_config_list' %}"><i class="fas fa-camera"></i> Manage Camera</a>
+        <a href="{% url 'mark_attendance' %}"><i class="fas fa-user-check"></i> Mark Attendance</a>
+        <a href="{% url 'capture_and_recognize_with_cam' %}"><i class="fas fa-video"></i> Mark Attendance With IP Camera</a>
+        <a href="{% url 'employe_attendance_list' %}"><i class="fas fa-calendar-check"></i> Attendance Details</a>
+        <a href="{% url 'late_checkin_policy_list' %}"><i class="fas fa-clock"></i> Check-In Policy</a>
+        <a href="{% url 'settings_list' %}"><i class="fas fa-clock"></i> Check-Out Policy</a>
+        <a href="{% url 'send_attendance_notifications' %}"><i class="fas fa-bell"></i> Send Notifications</a>
+        <a href="{% url 'view_email_configs' %}"><i class="fas fa-cogs"></i> Email Settings</a>
+        <h3>Detection</h3>
+        <a href="{% url 'ppe-page' %}"><i class="fas fa-vest-patches"></i> PPE Detection</a>
+        <a href=""><i class="fas fa-shield-alt"></i> Other Detection</a>
+        <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    {% else %}
+        <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+    {% endif %}
+  </div>
+
+  <!-- Toggle Button -->
+  <button class="toggle-btn" id="toggle-btn">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- Main Content -->
+  <div class="main-content" id="main-content">
+    <div class="container">
+      <div class="heading">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAtCAYAAAA6GuKaAAAAAXNSR0IArs4c6QAAAhhJREFUaEPt2M9LAkEUB/A321qEgv0dXhJEIahDgewaRbcOBR2iQ/9CWLeo/oGCokOHDtElioI0CG+ZpaiR5/6AChaESmVfWJg/cndmdkVHWK+zo5/9zmOeMwT68EP60AwOulur5iTtJG2SgFMefVkegceAq/Iqb2hDw1svk4lPppdAIKM3wfWKLu8+q3fvLHM6Vh4/4DfpCoCEAeC2rBUjhflCyRSBQPzx0BECLAHgkyzpE+lwWqPBO4JuAdd+87qsFecM4U3g2hTMyJI+RYPbRhuAzeFtwexwW+hf8MAFAKgGS1pClMbyajLzN16t4XjoEACWjcqAIMxk1dSV4TitfozGKQlXp30RXVKzkWSiEVyv4bbfjAhkIa/cn5i5LCXdS3D1ZbjRvQZzo0UAc6FFATOjRQIzoUUDU9EigqlofywURYBN4z0T13LKw07juD8WXEQgxyb77H5OSa1a7Q9UtO/UN+jyes5NOl7bBkLpeEwNxFZzERHO1FxEgzOhq0slEpwZLRKcCy0KnBstAtwSutdwy+gaXPZ6zgjAtMG++oEojbeeXPyx0AESWDHZi2dzSuqy4yeX2hdSdpX2h1vTIxf9cGsraQqcehr/3znpYGob5/l/0JI4871HHd7le4+mxEfcUc3l3ua6YYoHoxWU97p+w8SzKnaf7UhN20XwznfQvIlZfd5J2mpyvPOcpHkTs/p8Xyb9DRb/yD3KyglOAAAAAElFTkSuQmCC" alt="Back Icon" class="back-icon" onclick="location.href='/'"/>
+          <h2 style="flex-grow: 1; text-align: center; margin: 0;">Employee Attendance Records</h2>
+        </div>
+        <p class="text-center"><strong>Total Attendance Records: </strong>{{ total_attendance_count }}</p>
+      </div>
+
+      <form method="get" class="filter-container">
+        <div class="input-group">
+          <input type="text" name="search" class="form-control" placeholder="Search for Employee..." value="{{ search_query }}">
+          <div class="input-group-append">
+            <button class="btn btn-custom" type="submit"><i class="fas fa-search"></i> Search</button>
+          </div>
+        </div>
+        <div class="input-group">
+          <input type="text" name="roll_no" class="form-control" placeholder="Search by Emp ID" value="{{ roll_no_filter }}">
+          <div class="input-group-append">
+            <button class="btn btn-custom" type="submit"><i class="fas fa-search"></i> Emp ID</button>
+          </div>
+        </div>
+        <div class="input-group">
+          <select name="status" class="form-control">
+            <option value="">Select Status</option>
+            <option value="Present" {% if status_filter == 'Present' %}selected{% endif %}>Present</option>
+            <option value="Absent" {% if status_filter == 'Absent' %}selected{% endif %}>Absent</option>
+            <option value="Leave" {% if status_filter == 'Leave' %}selected{% endif %}>Leave</option>
+          </select>
+          <div class="input-group-append">
+            <button class="btn btn-custom" type="submit"><i class="fas fa-filter"></i> Status</button>
+          </div>
+        </div>
+        <div class="input-group">
+          <input type="date" name="attendance_date" class="form-control" value="{{ date_filter }}">
+          <div class="input-group-append">
+            <button class="btn btn-custom" type="submit"><i class="fas fa-calendar-alt"></i> Filter</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="table-wrapper">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Full Name's Employee</th>
+              <th>EmpID</th>
+              <th>Attendance Date</th>
+              <th>Status</th>
+              <th>Late</th>
+              <th>Check-in Time</th>
+              <th>Check-out Time</th>
+              <th>Stayed Time</th>
+              <th>Over Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for data in employe_attendance_data %}
+              {% if data.attendance_records %}
+                {% for attendance in data.attendance_records %}
+                  <tr>
+                    <td>{{ data.employe.name }}</td>
+                    <td>{{ data.employe.emp_id }}</td>
+                    <td>{{ attendance.date }}</td>
+                    <td>{{ attendance.status }}</td>
+                    <td>{{ attendance.is_late|yesno:"Yes,No" }}</td>
+                    <td>
+                      {% if attendance.check_in_time %}
+                        {{ attendance.check_in_time|date:"h:i:s A" }}
+                      {% else %}
+                        Not Checked In
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if attendance.check_out_time %}
+                        {{ attendance.check_out_time|date:"h:i:s A" }}
+                      {% else %}
+                        Not Checked Out
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if attendance.check_in_time and attendance.check_out_time %}
+                        {{ attendance.calculate_duration }}
+                      {% else %}
+                        N/A
+                      {% endif %}
+                    </td>
+                    <td>
+                      <span class="overtime" data-overtime="{{ attendance.overtime_hours }}">{{ attendance.overtime_hours }}</span>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="9" class="text-center">No attendance records found for {{ data.employe.name }}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        <p>&copy; 2025 Attendance System by Towmiess</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toggle Script -->
+  <script>
+    const toggleBtn = document.getElementById('toggle-btn');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      mainContent.classList.toggle('shift');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+        sidebar.classList.remove('open');
+        mainContent.classList.remove('shift');
+      }
+    });
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    function formatOvertime(decimalHours) {
+      if (!decimalHours || isNaN(decimalHours)) return "0h 0m 0s";
+      let totalSeconds = Math.round(decimalHours * 3600);
+      let hours = Math.floor(totalSeconds / 3600);
+      let minutes = Math.floor((totalSeconds % 3600) / 60);
+      let seconds = totalSeconds % 60;
+      return `${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      let overtimeCells = document.querySelectorAll(".overtime");
+      overtimeCells.forEach(cell => {
+        let overtimeValue = parseFloat(cell.getAttribute("data-overtime").trim());
+        cell.innerText = formatOvertime(overtimeValue);
+      });
+    });
+  </script>
+</body>
+</html>

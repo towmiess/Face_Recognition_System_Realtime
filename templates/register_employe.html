@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employe Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
+    <style>
+   /* General Styles */
+body {
+    background: linear-gradient(135deg, #74ebd5, #acb6e5);
+    font-family: 'Poppins', sans-serif;
+    color: #343a40;
+    margin: 0;
+    padding: 0;
+}
+
+/* Centered Container */
+.container {
+    margin-top: 50px;
+    max-width: 900px;
+}
+
+/* Card Styling with Glass Effect */
+.card {
+    border: none;
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+/* Heading */
+h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Input Fields & Select Dropdowns */
+.form-group input,
+.form-group select {
+    border-radius: 12px;
+    border: none;
+    padding: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: 0.3s ease-in-out;
+    font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border: 2px solid #28a745;
+    outline: none;
+    transform: scale(1.02);
+}
+
+/* Profile Image Preview */
+.image-preview {
+    display: none;
+    margin-top: 15px;
+    border-radius: 1rem;
+    border: 2px dashed #28a745;
+    max-width: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Submit Button */
+.btn-success {
+    background: linear-gradient(135deg, #28a745, #218838);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    transition: all 0.3s ease-in-out;
+    font-size: 1.2rem;
+    color: white;
+    font-weight: bold;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+    transform: scale(1.05);
+}
+
+/* Back to Home Button */
+.btn-secondary {
+    background-color: #34495e;
+    border-radius: 20px;
+    padding: 10px 25px;
+    font-size: 1rem;
+}
+
+.btn-secondary:hover {
+    background-color: #2c3e50;
+}
+
+/* Alerts */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.alert.success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+    .container {
+        margin-top: 30px;
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .btn-success {
+        width: 100%;
+        padding: 14px;
+    }
+}
+
+@media (max-width: 575px) {
+    .container {
+        margin-top: 20px;
+        padding: 10px;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    .btn-success {
+        padding: 12px;
+    }
+}
+
+/* Image Upload Message */
+.image-upload-message {
+    font-size: 1.1rem;
+    color: #d9534f;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card shadow">
+            <div class="card-body text-center">
+                <h2 class="card-title">Employe Registration</h2>
+                {% if messages %}
+                    <div>
+                        {% for message in messages %}
+                            <div class="alert {{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form id="registrationForm" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="username" class="form-label">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="password" class="form-label">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </div>
+                
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                    </div>
+                
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="phone_number" class="form-label">Phone Number:</label>
+                            <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="roll_no" class="form-label">EMP ID:</label>
+                            <input type="text" class="form-control" id="emp_id" name="emp_id" required>
+                        </div>
+                    </div>
+                
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="department" class="form-label">Department:</label>
+                            <select class="form-select" id="department" name="department" required>
+                                <option value="">Select Department</option>
+                                {% for department in departments %}
+                                    <option value="{{ department.id }}">{{ department.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="address" class="form-label">Address:</label>
+                            <input type="text" class="form-control" id="address" name="address" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="basic_salary">Basic Salary:</label>
+                            <input type="number" class="form-control" id="base_salary" name="base_salary" placeholder="Enter Basic Salary">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="allowance">Allowance:</label>
+                            <input type="number" class="form-control" id="allowances" name="allowances" placeholder="Enter Allowance">
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="date_of_birth" class="form-label">Date of Birth:</label>
+                            <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="joining_date" class="form-label">Joining Date:</label>
+                            <input type="date" class="form-control" id="joining_date" name="joining_date" required>
+                        </div>
+                    </div>
+                
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="mother_name" class="form-label">Mother's Name:</label>
+                            <input type="text" class="form-control" id="mother_name" name="mother_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="father_name" class="form-label">Father's Name:</label>
+                            <input type="text" class="form-control" id="father_name" name="father_name" required>
+                        </div>
+                    </div>
+                
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Profile Image:</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                        <small class="text-muted">Upload a clear image for face recognition.</small>
+                    </div>
+                
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success">Submit Registration</button>
+                    </div>
+                
+                    <div class="text-center mt-3">
+                        <a href="{% url 'home' %}" class="btn btn-secondary"><i class="fas fa-home"></i> Back to Home</a>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+    </script>
+</body>
+
+</html>

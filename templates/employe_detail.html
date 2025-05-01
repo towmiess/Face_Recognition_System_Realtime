@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 850px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            color: #333;
+        }
+        .profile {
+            margin-bottom: 25px;
+        }
+        .profile img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ecf0f1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+        .profile img:hover {
+            transform: scale(1.1);
+        }
+        .profile h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-top: 10px;
+            color: #2c3e50;
+        }
+        .profile span {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .detail {
+            background: #f3f3f3;
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 500;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        .detail:hover {
+            transform: translateY(-5px);
+        }
+        .actions {
+            margin-top: 30px;
+        }
+        .actions a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 12px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s ease-in-out;
+        }
+        .edit-btn {
+            background: #3498db;
+            color: #fff;
+        }
+        .edit-btn:hover {
+            background: #1f6692;
+        }
+        .delete-btn {
+            background: #e74c3c;
+            color: #fff;
+        }
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        .back-btn {
+            background: #7f8c8d;
+            color: #fff;
+        }
+        .back-btn:hover {
+            background: #5d6d7e;
+        }
+        @media (max-width: 768px) {
+            .details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Profile Picture Section -->
+        <div class="profile">
+            <img src="{% static 'images/default.png' %}" onerror="this.onerror=null; this.src='{% static 'images/default.png' %}';" alt="Profile Picture">
+            <h2>{{ employe.name }}</h2>
+            <span>Employee ID: {{ employe.emp_id }}</span>
+        </div>
+
+        <!-- Employee Details -->
+        <div class="details">
+            <div class="detail"><strong>Email:</strong> {{ employe.email }}</div>
+            <div class="detail"><strong>Phone:</strong> {{ employe.phone_number }}</div>
+            <div class="detail"><strong>Address:</strong> {{ employe.address }}</div>
+            <div class="detail"><strong>DOB:</strong> {{ employe.date_of_birth|date:"d M Y" }}</div>
+            <div class="detail"><strong>Joining Date:</strong> {{ employe.joining_date|date:"d M Y" }}</div>
+            <div class="detail"><strong>Mother's Name:</strong> {{ employe.mother_name }}</div>
+            <div class="detail"><strong>Father's Name:</strong> {{ employe.father_name }}</div>
+            <div class="detail"><strong>Face Data:</strong> {% if employe.face_embedding %} ✅ Yes {% else %} ❌ No {% endif %}</div>
+            <div class="detail"><strong>Authorized:</strong> {% if employe.authorized %} ✅ Yes {% else %} ❌ No {% endif %}</div>
+            <div class="detail"><strong>Base Salary:</strong> ₹{{ employe.base_salary|floatformat:2 }}</div>
+            <div class="detail"><strong>Allowances:</strong> ₹{{ employe.allowances|floatformat:2 }}</div>
+            <div class="detail"><strong>Per Day Salary:</strong> ₹{{ employe.per_day_salary|floatformat:2 }}</div>
+            <div class="detail"><strong>Departments:</strong> 
+                {% for department in employe.department.all %}
+                    {{ department.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions">
+            <a href="{% url 'employe-list' %}" class="back-btn">⬅ Back</a>
+            <a href="{% url 'employe-edit' pk=employe.pk %}" class="edit-btn">✏ Edit</a>
+            <a href="{% url 'employe-delete' pk=employe.pk %}" class="delete-btn">🗑 Delete</a>
+        </div>
+    </div>
+</body>
+</html>

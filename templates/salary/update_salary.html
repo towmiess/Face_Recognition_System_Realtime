@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Salary</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+            max-width: 600px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .btn-back {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Update Salary</h1>
+
+        <!-- Success/Error Messages -->
+        {% if messages %}
+        <div class="alert alert-info">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Update Salary Form -->
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="employee">Employee</label>
+                <!-- Display the employee's name as readonly -->
+                <input type="text" class="form-control" id="employee" name="employee" value="{{ salary.employee.name }}" readonly>
+                <input type="hidden" name="employee" value="{{ salary.employee.id }}">  <!-- Hidden input to submit the employee ID -->
+                {% if form.employee.errors %}
+                    <div class="text-danger">
+                        {% for error in form.employee.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group">
+                <label for="month">Month</label>
+                <input type="number" class="form-control" id="month" name="month" value="{{ salary.month }}" required>
+                {% if form.month.errors %}
+                    <div class="text-danger">
+                        {% for error in form.month.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="number" class="form-control" id="year" name="year" value="{{ salary.year }}" required>
+                {% if form.year.errors %}
+                    <div class="text-danger">
+                        {% for error in form.year.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group">
+                <label for="bonus">Bonus</label>
+                <input type="number" class="form-control" id="bonus" name="bonus" value="{{ salary.bonus }}" required>
+                {% if form.bonus.errors %}
+                    <div class="text-danger">
+                        {% for error in form.bonus.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group">
+                <label for="tax_deductions">Tax Deductions</label>
+                <input type="number" class="form-control" id="tax_deductions" name="tax_deductions" value="{{ salary.tax_deductions }}" required>
+                {% if form.tax_deductions.errors %}
+                    <div class="text-danger">
+                        {% for error in form.tax_deductions.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group">
+                <label for="other_deductions">Other Deductions</label>
+                <input type="number" class="form-control" id="other_deductions" name="other_deductions" value="{{ salary.other_deductions }}" required>
+                {% if form.other_deductions.errors %}
+                    <div class="text-danger">
+                        {% for error in form.other_deductions.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <button type="submit" class="btn btn-primary w-100">Update Salary</button>
+        </form>
+        
+
+        <div class="text-center">
+            <a href="{% url 'salary_list' %}" class="btn btn-secondary btn-back">Back to Salary List</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
