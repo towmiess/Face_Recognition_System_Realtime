@@ -86,12 +86,10 @@
 
 4. **Run the development server:**
 
-   ```cmd 
+   ```bash
   uvicorn Project101.asgi:application
 ``` 
 The application will be available at `http://127.0.0.1:8000`.
-
-  ---
 
 ## 🎬 **Usage**
 
