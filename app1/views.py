@@ -327,7 +327,7 @@ def update_leave_attendance(today):
         approved=True
     )
 
-    # Create a set of Employe with approved leave for today
+    # Create a set of Employee with approved leave for today
     approved_leave_employe = {leave.employe.id for leave in approved_leaves}
 
     # Debugging log to check approved leaves and Employe ids
@@ -545,18 +545,21 @@ def employe_attendance_list(request):
     total_attendance_count = 0  # Initialize the total attendance count
 
     for employe in employe:
-        # Get the attendance records for each Employe
+        # Fetch attendance records for the current employe
         attendance_records = Attendance.objects.filter(employe=employe)
 
         # Filter by date if provided
         if date_filter:
-            # Assuming date_filter is in the format YYYY-MM-DD
             attendance_records = attendance_records.filter(date=date_filter)
 
         # Filter by status if provided
         if status_filter:
             attendance_records = attendance_records.filter(status=status_filter)
-
+            
+        # Calculate overtime for each attendance record
+        for record in attendance_records:
+            record.overtime_hours = record.calculate_overtime()
+            record.save()  # Save the updated record with overtime hours
         # Order attendance records by date
         attendance_records = attendance_records.order_by('date')
 
@@ -817,7 +820,6 @@ def delete_late_checkin_policy(request, policy_id):
     return render(request, 'latecheckinpolicy_confirm_delete.html', {'policy': policy})
 
 #######################################################################################
-
 def capture_and_recognize_with_cam(request):
     stop_events = []  # List to store stop events for each thread
     camera_threads = []  # List to store threads for each camera
@@ -825,40 +827,42 @@ def capture_and_recognize_with_cam(request):
     error_messages = []  # List to capture errors from threads
 
     def process_frame(cam_config, stop_event):
-        """Thread function to capture and process frames for each camera."""
         cap = None
-        window_created = False  # Flag to track if the window was created
+        window_created = False
         try:
-            # Check if the camera source is a number (local webcam) or a string (IP camera URL)
+            # Mở camera từ source
             if cam_config.camera_source.isdigit():
-                cap = cv2.VideoCapture(int(cam_config.camera_source))  # Use integer index for webcam
+                cap = cv2.VideoCapture(int(cam_config.camera_source))
             else:
-                cap = cv2.VideoCapture(cam_config.camera_source)  # Use string for IP camera URL
+                cap = cv2.VideoCapture(cam_config.camera_source)
 
             if not cap.isOpened():
                 raise Exception(f"Unable to access camera {cam_config.name}.")
 
             threshold = cam_config.threshold
 
-            # Initialize pygame mixer for sound playback
+            # Âm thanh thông báo
             pygame.mixer.init()
-            success_sound = pygame.mixer.Sound('static/success.wav')  # Load sound path
+            success_sound = pygame.mixer.Sound('static/success.wav')
 
-            window_name = f'Camera Location - {cam_config.location}'
-            camera_windows.append(window_name)  # Track the window name
+            window_name = f"My Camera - {cam_config.location}"
+            camera_windows.append(window_name)
+
+            desired_width = 1024
+            desired_height = 768
 
             while not stop_event.is_set():
                 ret, frame = cap.read()
                 if not ret:
                     print(f"Failed to capture frame for camera: {cam_config.name}")
-                    break  # If frame capture fails, break from the loop
+                    break
 
-                # Convert BGR to RGB
+                # BGR -> RGB
                 frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                test_face_encodings = detect_and_encode(frame_rgb)  # Function to detect and encode face in frame
+                test_face_encodings = detect_and_encode(frame_rgb)
 
                 if test_face_encodings:
-                    known_face_encodings, known_face_names = encode_uploaded_images()  # Load known face encodings once
+                    known_face_encodings, known_face_names = encode_uploaded_images()
                     if known_face_encodings:
                         names = recognize_faces(
                             np.array(known_face_encodings), known_face_names, test_face_encodings, threshold
@@ -868,69 +872,64 @@ def capture_and_recognize_with_cam(request):
                             if box is not None:
                                 (x1, y1, x2, y2) = map(int, box)
                                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                                cv2.putText(frame, name, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+                                cv2.putText(frame, name, (x1, y1 - 10),
+                                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
                                 if name != 'Not Recognized':
-                                    employe = Employe.objects.filter(name=name)
-                                    if employe.exists():
-                                        employe = employe.first()
-                                        print(f"Recognized employe: {employe.name}")  # Debugging log
+                                    employe = Employe.objects.filter(name=name).first()
+                                    if employe:
+                                        print(f"Recognized employee: {employe.name}")
 
-                                        # Fetch the check-out time threshold
-                                        if employe.settings:
-                                            check_out_threshold_seconds = employe.settings.check_out_time_threshold
+                                        check_out_threshold_seconds = employe.settings.check_out_time_threshold if employe.settings else 0
 
-                                        # Check if attendance exists for today
-                                        attendance, created = Attendance.objects.get_or_create(
+                                        attendance, _ = Attendance.objects.get_or_create(
                                             employe=employe, date=now().date()
                                         )
 
                                         if attendance.check_in_time is None:
                                             attendance.mark_checked_in()
                                             success_sound.play()
-                                            cv2.putText(
-                                                frame, f"{name}, checked in.", (50, 50), 
-                                                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA
-                                            )
-                                            print(f"Attendance checked in for {employe.name}")
+                                            cv2.putText(frame, f"{name}, checked in.", (50, 50),
+                                                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                                            print(f"Checked in for {employe.name}")
                                         elif attendance.check_out_time is None:
                                             if now() >= attendance.check_in_time + timedelta(seconds=check_out_threshold_seconds):
                                                 attendance.mark_checked_out()
                                                 success_sound.play()
-                                                cv2.putText(
-                                                    frame, f"{name}, checked out.", (50, 50), 
-                                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA
-                                                )
-                                                print(f"Attendance checked out for {employe.name}")
+                                                cv2.putText(frame, f"{name}, checked out.", (50, 50),
+                                                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                                                print(f"Checked out for {employe.name}")
                                             else:
-                                                cv2.putText(
-                                                    frame, f"{name}, already checked in.", (50, 50), 
-                                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA
-                                                )
+                                                cv2.putText(frame, f"Hello {name}, checked in.", (50, 50),
+                                                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
                                         else:
-                                            cv2.putText(
-                                                frame, f"{name}, already checked out.", (50, 50), 
-                                                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA
-                                            )
+                                            cv2.putText(frame, f"Goodbye {name}.", (50, 50),
+                                                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
                                             print(f"Attendance already completed for {employe.name}")
 
-                # Display frame in a separate window for each camera
+                # Resize frame để hiển thị đẹp
+                resized_frame = cv2.resize(frame, (desired_width, desired_height))
+
                 if not window_created:
-                    cv2.namedWindow(window_name)  # Only create window once
-                    window_created = True  # Mark window as created
-                cv2.imshow(window_name, frame)
+                    cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+                    cv2.resizeWindow(window_name, desired_width, desired_height)
+                    window_created = True
+
+                cv2.imshow(window_name, resized_frame)
+
                 if cv2.waitKey(1) & 0xFF == ord('q'):
-                    stop_event.set()  # Signal the thread to stop when 'q' is pressed
+                    stop_event.set()
                     break
 
         except Exception as e:
             print(f"Error in thread for {cam_config.name}: {e}")
-            error_messages.append(str(e))  # Capture error message
+            error_messages.append(str(e))
         finally:
-            if cap is not None:
+            if cap:
                 cap.release()
             if window_created:
-                cv2.destroyWindow(window_name)  # Only destroy if window was created
+                cv2.destroyWindow(window_name)
+
 
     try:
         # Get all camera configurations
@@ -1122,7 +1121,10 @@ def employe_attendance(request):
     
     if date_filter:
         attendance_records = attendance_records.filter(date=date_filter)
-    
+    # Add overtime to the context
+    for record in attendance_records:
+        record.overtime_hours = record.calculate_overtime()
+
     # Render the attendance records
     return render(request, 'employe/employe_attendance.html', {
         'employe_attendance_data': attendance_records,
@@ -1376,10 +1378,6 @@ def apply_leave(request):
 
 def ppe(request): 
     return render(request, 'yolo/ppe.html')
-
-
-
-
 
 
 

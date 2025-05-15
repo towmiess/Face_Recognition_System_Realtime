@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-38axrzh@n80vyv^o#2nfbhpx-=d7%jlq1v(gban69ygp4m5n0-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['192.168.1.7', 'localhost', '127.0.0.1', '*']
 
 
 # Application definition
@@ -27,7 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'app1',
+    
 ]
 
 MIDDLEWARE = [
@@ -59,10 +61,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Project101.wsgi.application'
-ASGI_APPLICATION = 'Project101.wsgi.application'
-
+ASGI_APPLICATION = 'Project101.asgi.application'
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -73,7 +73,6 @@ DATABASES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -117,7 +116,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 # settings.py
 
 MEDIA_URL = '/media/'

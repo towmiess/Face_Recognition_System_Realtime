@@ -8,7 +8,7 @@ urlpatterns = [
     path('employe-dashboard/', views.employe_dashboard, name='employe_dashboard'),
     
     # this is for object detection
-    path('ppe', views.ppe, name='ppe-page'),  # URL to the YoloPage
+    path('ppe-page', views.ppe, name='ppe-page'),  # URL to the YoloPage
 
     # Employe Registration and Attendance
     path('register_employe/', views.register_employe, name='register_employe'),

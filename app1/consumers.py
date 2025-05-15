@@ -25,6 +25,7 @@ video_capture.set(cv2.CAP_PROP_FPS, 30)  # Adjust FPS to balance performance
 pygame.mixer.init()
 alert_sound = pygame.mixer.Sound("app1/alert.mp3")  # Load alert sound file
 
+
 class VideoStreamConsumer(AsyncWebsocketConsumer):
     active_connections = set()
     current_class_ids = []
@@ -37,14 +38,14 @@ class VideoStreamConsumer(AsyncWebsocketConsumer):
         print("WebSocket connected")
         self.active_connections.add(self)
         await self.accept()
-
+        
         if len(self.active_connections) == 1:
             asyncio.create_task(self.stream_video())
 
     async def disconnect(self, close_code):
         print("WebSocket disconnected")
         self.active_connections.discard(self)
-
+        
     async def receive(self, text_data):
         data = json.loads(text_data)
 

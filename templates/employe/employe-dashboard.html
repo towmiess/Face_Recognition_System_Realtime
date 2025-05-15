@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employe Dashboard</title>
-    <link rel="shortcut icon" href="https://apycoder.com/wp-content/uploads/2024/02/WhatsApp-Image-2024-02-10-at-2.31.50-PM-1.jpeg">
+    <title>Employee Dashboard</title>
+    <link rel="shortcut icon" href="{% static 'images/logo.jpg' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
@@ -14,9 +14,9 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="logo" title="University Management System">
-            <img src="https://apycoder.com/wp-content/uploads/2024/02/WhatsApp-Image-2024-02-10-at-2.31.50-PM-1.jpeg" alt="Logo">
-            <h2>A<span class="danger">P</span>YC<span class="danger">O</span>DE<span class="danger">R</span></h2>
+        <div class="logo" >
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo" style="width: 40px; height: auto;">
+            <h2><span class="danger">G5</span>_<span class="danger">PTIT</span></h2>
         </div>
         <div class="navbar">
             <a href="{% url 'employe_dashboard' %}" class="active">
@@ -65,7 +65,7 @@
                     </div>
                     <div class="info">
                         <p>Hey, <b>{{ employe.name }}</b></p>
-                        <small class="text-muted">Roll No: {{ employe.roll_no }}</small>
+                        <small class="text-muted">Roll No: {{ employe.emp_id }}</small>
                     </div>
                 </div>
                 <div class="about">

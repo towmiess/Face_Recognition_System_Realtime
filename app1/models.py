@@ -120,10 +120,10 @@ class Attendance(models.Model):
     def calculate_overtime(self):
         """Calculate overtime and update the overtime_hours field."""
         if self.check_in_time and self.check_out_time:
-            work_duration = self.check_out_time - self.check_in_time
-            standard_work_hours = timedelta(hours=8)  # Standard working hours
-            overtime = max(work_duration - standard_work_hours, timedelta(0))
-            return overtime.total_seconds() / 3600  # Convert to hours
+            stayed_duration = self.check_out_time - self.check_in_time
+            stayed_hours = stayed_duration.total_seconds() / 3600  # Convert to hours
+            overtime = max(stayed_hours - 4, 0) # 4 là số giờ làm việc bình thường
+            return overtime
         return 0.0
 
     def save(self, *args, **kwargs):
@@ -178,8 +178,8 @@ class Salary(models.Model):
         self.allowances = self.employee.allowances
 
         # Constants (assumed)
-        WORKING_DAYS_PER_MONTH = Decimal("26")  # Adjust based on actual company policy
-        WORKING_HOURS_PER_DAY = Decimal("8")
+        WORKING_DAYS_PER_MONTH = Decimal("26")  
+        WORKING_HOURS_PER_DAY = Decimal("4")
 
         # Calculate hourly rate
         hourly_rate = self.base_salary / (WORKING_DAYS_PER_MONTH * WORKING_HOURS_PER_DAY)
@@ -227,7 +227,7 @@ class Salary(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.employee.name} - {self.month}/{self.year} - ₹{self.net_salary}"
+        return f"{self.employee.name} - {self.month}/{self.year} - ${self.net_salary}"
 
 
 

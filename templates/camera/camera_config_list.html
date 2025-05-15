@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camera Configurations List</title>
+{% extends 'base.html' %}
 
-    <!-- Google Fonts for nice typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-    <!-- CSS for styling the table and layout -->
+{% block extra_css %}
+<!-- CSS for styling the table and layout -->
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -25,12 +18,24 @@
         .container {
             width: 100%;
             max-width: 900px;
+            margin-left: 200px;
+            margin-right: auto; /* Center horizontally */
+
             background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent black background */
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
         }
-
+        
+        footer {
+            background-color: #1e1e1e;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            border-top: 1px solid #333;
+            margin-top: auto;
+            width: 100%;
+        }
         h1 {
             text-align: center;
             margin-bottom: 20px;
@@ -91,11 +96,11 @@
         }
 
         .back-home-btn {
-            background-color: #FFD700; /* Same yellow button */
+            background-color:rgb(91, 169, 221); /* Same blue button */
         }
 
         .back-home-btn:hover {
-            background-color: #FFC107; /* Darker yellow on hover */
+            background-color:rgb(93, 164, 231); /* Darker yellow on hover */
         }
 
         /* Responsive design */
@@ -113,11 +118,20 @@
             }
         }
     </style>
-</head>
-<body>
+{% endblock %}
+{% block content %}
+<div class="header">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Configurations List</title>
+    <link rel="shortcut icon" href="/static/images/logo.jpg">
+    <!-- Google Fonts for nice typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
+
+</div>
     <div class="container">
-        <h1>Saved Camera Configurations</h1>
+        <h1>📷 Camera Configurations</h1>
 
         <table>
             <thead>
@@ -149,5 +163,4 @@
         <a href="{% url 'home' %}" class="back-home-btn">Back to Home</a> <!-- New Back to Home button -->
     </div>
 
-</body>
-</html>
+{% endblock %}

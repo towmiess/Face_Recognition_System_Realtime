@@ -2,15 +2,24 @@
 <html>
 <head>
     <title>Delete Leave</title>
+    <link rel="shortcut icon" href="/static/images/logo.jpg">
 </head>
 <body>
     <h1>Confirm Delete</h1>
     <p>Are you sure you want to delete this leave?</p>
     <p><strong>{{ leave.student.name }}</strong> - {{ leave.start_date }} to {{ leave.end_date }}</p>
-    <form method="post">
+    <form id="delete-form" method="post">
         {% csrf_token %}
-        <button type="submit">Yes, Delete</button>
+        <button type="button" onclick="confirmDelete()">Yes, Delete</button>
         <a href="{% url 'leave_list' %}">Cancel</a>
     </form>
+
+    <script>
+        function confirmDelete() {
+            if (confirm("Are you sure you want to delete this leave?")) {
+                document.getElementById('delete-form').submit();
+            }
+        }
+    </script>
 </body>
 </html>

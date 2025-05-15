@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Leave Requests</title>
+    <title>Management Leave Requests</title>
+    <link rel="shortcut icon" href="/static/images/logo.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
@@ -120,7 +121,9 @@
 
 <div class="container">
     <div class="header">
-        <a href="/" class="back-button"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        <a href="{% url 'home' %}" class="back-button" title="Back to Home" style="color: white;">
+            <i class="fas fa-home"></i>
+        </a>
         <h2>Your Leave Requests</h2>
     </div>
 

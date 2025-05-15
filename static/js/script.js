@@ -86,8 +86,8 @@ function connectWebSocket() {
         // Replace "Class ID 1" with "No Safety Vest"
         alertMessage = alertMessage.replace(/Class ID 1/g, "No Safety Vest");
         alertMessage = alertMessage.replace(/Class ID 3/g, "Safety Vest");
-        alertMessage = alertMessage.replace(/Class ID 2/g, "Cart");
-        alertMessage = alertMessage.replace(/Class ID 4/g, "Glasses");
+        alertMessage = alertMessage.replace(/Class ID 2/g, "No Helmet");
+        alertMessage = alertMessage.replace(/Class ID 4/g, "Helmet");
 
         alertBox.innerHTML = `<p style="color: red; font-weight: bold;">${alertMessage}</p>`;
     }

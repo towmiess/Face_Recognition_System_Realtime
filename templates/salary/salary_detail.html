@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salary Details - {{ salary.employee.name }}</title>
+    <link rel="shortcut icon" href="/static/images/logo.jpg">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
      body {
@@ -157,9 +158,8 @@
 <div class="container salary-container">
     <!-- Company Info Section -->
     <div class="company-info">
-        <div class="company-name">ApyCoder Corporation</div>
-        <div>123, Business Street, City, State, 12345</div>
-        <div>Contact No: +91 123 456 7890</div>
+        <div class="company-name">💰SALARY SYSTEM 💰</div>
+        <div><em>Posts and Telecommunications Institute of Technology</em></div>
     </div>
 
     <!-- Salary Header Section -->
@@ -178,52 +178,52 @@
         </thead>
         <tbody>
             <tr class="highlight-row">
-                <td><strong>Base Salary</strong></td>
-                <td>₹{{ salary.base_salary }}</td>
+                <td><strong>💲Base Salary</strong></td>
+                <td>${{ salary.base_salary }}</td>
             </tr>
             <tr>
-                <td><strong>Allowances</strong></td>
-                <td>₹{{ salary.allowances }}</td>
+                <td><strong>💶Allowances</strong></td>
+                <td>${{ salary.allowances }}</td>
             </tr>
             <tr class="highlight-row">
-                <td><strong>Overtime Hours Worked</strong></td>
+                <td><strong>🕞Overtime Hours Worked</strong></td>
                 <td><span class="overtime" data-overtime="{{ salary.overtime_hours }}">{{ salary.overtime_hours }}</span></td>
             </tr>
             <tr>
-                <td><strong>Bonus</strong></td>
-                <td>₹{{ salary.bonus }}</td>
+                <td><strong>💲Bonus</strong></td>
+                <td>${{ salary.bonus }}</td>
             </tr>
             <tr class="highlight-row">
-                <td><strong>Overtime Rate</strong></td>
-                <td>₹{{ salary.overtime_rate }}</td>
+                <td><strong>📈 Overtime Rate</strong></td>
+                <td>${{ salary.overtime_rate }}</td>
             </tr>
-            
+
             <tr class="highlight-row">
-                <td><strong>Gross Salary</strong></td>
-                <td>₹{{ salary.gross_salary }}</td>
+                <td><strong>🪙Total Salary</strong></td>
+                <td>${{ salary.gross_salary }}</td>
             </tr>
             <tr>
-                <td><strong>Tax Deductions</strong></td>
-                <td>₹{{ salary.tax_deductions }}</td>
+                <td><strong> 💸Tax Deductions</strong></td>
+                <td>${{ salary.tax_deductions }}</td>
             </tr>
             <tr class="highlight-row">
                 <td><strong>Other Deductions</strong></td>
-                <td>₹{{ salary.other_deductions }}</td>
+                <td>${{ salary.other_deductions }}</td>
             </tr>
             <tr class="highlight-row">
-                <td><strong>Absent Deductions</strong></td>
-                <td>₹{{ salary.absence_deduction }}</td>
+                <td><strong>⭕ Absent Deductions</strong></td>
+                <td>${{ salary.absence_deduction }}</td>
             </tr>
             <tr>
                 <td><strong>Net Salary</strong></td>
-                <td class="net-salary">₹{{ salary.net_salary }}</td>
+                <td class="net-salary">${{ salary.net_salary }}</td>
             </tr>
         </tbody>
     </table>
 
     <!-- Back Button -->
     <div class="btn-back">
-        <a href="{% url 'salary_list' %}" class="btn btn-primary">Back to Salary List</a>
+        <a href="{% url 'salary_list' %}" class="btn btn-primary"> Back to Salary List</a>
     </div>
 </div>
 

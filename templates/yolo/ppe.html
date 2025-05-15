@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-{%load static%}
+{% load static %}
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Real-Time PPE Detection</title>
+    <link rel="shortcut icon" href="{% static 'images/logo.jpg' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style2.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -17,12 +18,12 @@
         <button id="start-button">Start</button>
         <button id="stop-button" disabled>Stop</button>
 
-        <label for="class-id-select">Select Classes to Detect:</label>
+        <label for="class-id-select" style="font-weight: bold;">Select Classes to Detect:</label>
         <select id="class-id-select" multiple title="Select Classes to Detect">
-            <option value="1">No Vest</option>
-            <option value="3">Safety Vest</option>
-            <option value="2">Cart</option>
-            <option value="4">Glasses</option>
+            <option value="1">❌🦺 Vest</option>
+            <option value="3">✔️🦺Safety Vest</option>
+            <option value="2">❌⛑️No Helmet</option>
+            <option value="4">✔️⛑️Helmet</option>
         </select>
         <!-- Confidence Threshold Slider -->
         <label for="confidence-slider">Confidence Threshold:</label>
@@ -32,15 +33,26 @@
         <button id="set-class-button">Set Classes to Detect</button>
    
         <div id="detected-classes"></div>
-
+        
+        <!-- Back Button -->
+        <a href="{% url 'home' %}" class="back-button" title="Back to Home" style="color: white;">
+            <i class="fas fa-home"></i>
+        </a>
+        <!-- Back Button -->
+        
+        <footer style="margin-top: auto; color: gray; text-align: center; text-size: 12px;">
+        <p>&copy;2025 Developed by Towmiess</p>
+      </div>
     </div>
-
+    
     <div class="video-container">
         <img id="video-frame" src="" alt="Video Stream" style="width: 100%; height: 100%; max-width: 640px;">
         <div id="status" class="status-disconnected">
             <i class="fas fa-times"></i>
         </div>
     </div>
-    <script src="{% static 'js/script.js' %}"></script>
+
 </body>
+
+    <script src="{% static 'js/script.js' %}"></script>
 </html>

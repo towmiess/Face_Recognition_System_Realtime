@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salary Details</title>
+    <link rel="shortcut icon" href="/static/images/logo.jpg">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -126,16 +127,16 @@
                 <tr>
                     <th>Name</th>
                     <th>Month</th>
-                    <th>Base Salary</th>
-                    <th>Allowances</th>
-                    <th>Bonus</th>
-                    <th>Overtime</th>
-                    <th>Overtime Rate</th>
-                    <th>Gross Salary</th>
-                    <th>Tax Deductions</th>
-                    <th>Other Deductions</th>
-                    <th>Absent Deductions</th>
-                    <th>Net Salary</th>
+                    <th>💲Base Salary</th>
+                    <th>💶Allowances</th>
+                    <th>💲Bonus</th>
+                    <th>🕞Overtime</th>
+                    <th>📈Overtime Rate</th>
+                    <th>🪙Gross Salary</th>
+                    <th>💸Tax Deductions</th>
+                    <th>💸Other Deductions</th>
+                    <th>⭕Absent Deductions</th>
+                    <th>💲Net Salary</th>
                 </tr>
             </thead>
             <tbody>
@@ -143,16 +144,16 @@
                 <tr>
                     <td>{{ salary.employee.name }}</td>
                     <td>{{ salary.month }}/{{ salary.year }}</td>
-                    <td>₹{{ salary.base_salary }}</td>
-                    <td>₹{{ salary.allowances }}</td>
-                    <td>₹{{ salary.bonus }}</td>
+                    <td>${{ salary.base_salary }}</td>
+                    <td>${{ salary.allowances }}</td>
+                    <td>${{ salary.bonus }}</td>
                     <td class="overtime" data-overtime="{{ salary.overtime_hours }}">{{ salary.overtime_hours }}</td>
-                    <td>₹{{ salary.overtime_rate }}</td>
-                    <td>₹{{ salary.gross_salary }}</td>
-                    <td>₹{{ salary.tax_deductions }}</td>
-                    <td>₹{{ salary.other_deductions }}</td>
-                    <td>₹{{ salary.absence_deduction }}</td>
-                    <td class="net-salary">₹{{ salary.net_salary }}</td>
+                    <td>${{ salary.overtime_rate }}</td>
+                    <td>${{ salary.gross_salary }}</td>
+                    <td>${{ salary.tax_deductions }}</td>
+                    <td>${{ salary.other_deductions }}</td>
+                    <td>${{ salary.absence_deduction }}</td>
+                    <td class="net-salary">${{ salary.net_salary }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
