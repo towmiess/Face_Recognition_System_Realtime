@@ -71,7 +71,7 @@
    If you're using `venv`, run:
 
    ```cmd 
-   python3.12 -m venv venv
+   python3.10 -m venv venv
    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
    ```
 
@@ -87,12 +87,9 @@
 4. **Run the development server:**
 
    ```bash
-  uvicorn Project101.asgi:application
-   ```
-
-   The application will be available at `http://127.0.0.1:8000`.
-
----
+     uvicorn Project101.asgi:application
+   ``` 
+The application will be available at `http://127.0.0.1:8000`.
 
 ## 🎬 **Usage**
 
@@ -102,7 +99,6 @@
 - **Employee Dashboard:**
   - Employees can track their attendance logs, salary details, and apply for leave.
 
----
 
 ## 🛠️ **Pre-requisites**
 
@@ -112,7 +108,5 @@
 - **InceptionResnetV1**: For face embedding.
 - **YOLOV8**: For PPE detection.
 - **Django**: For building the web app.
-
----
 
 
