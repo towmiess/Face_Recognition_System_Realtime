@@ -71,7 +71,7 @@
    If you're using `venv`, run:
 
    ```cmd 
-   python3.12 -m venv venv
+   python3.10 -m venv venv
    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
    ```
 
