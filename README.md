@@ -87,9 +87,10 @@
 4. **Run the development server:**
 
    ```cmd 
-  uvicorn Project101.asgi:application```
-``` The application will be available at `http://127.0.0.1:8000`.
-```
+  uvicorn Project101.asgi:application
+``` 
+The application will be available at `http://127.0.0.1:8000`.
+
   ---
 
 ## 🎬 **Usage**
