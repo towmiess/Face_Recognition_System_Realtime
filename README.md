@@ -99,7 +99,6 @@ The application will be available at `http://127.0.0.1:8000`.
 - **Employee Dashboard:**
   - Employees can track their attendance logs, salary details, and apply for leave.
 
----
 
 ## 🛠️ **Pre-requisites**
 
@@ -109,7 +108,5 @@ The application will be available at `http://127.0.0.1:8000`.
 - **InceptionResnetV1**: For face embedding.
 - **YOLOV8**: For PPE detection.
 - **Django**: For building the web app.
-
----
 
 
