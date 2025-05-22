@@ -1,25 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Face</title>
-    <link rel="shortcut icon" href="/static/images/logo.jpg">
-    <!-- Adding Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Register Face{% endblock %}
 
+{% block content %}
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f2f4f7;
+            background-color:rgb(24, 24, 24);
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: #444;
+            color: rgb(236, 239, 242);
             position: relative;
+        }
+        element.style {
+            color: hsl(57, 84%, 49%);
+            text-decoration: none;
         }
 
         .container {
@@ -28,12 +27,13 @@
             border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 480px;
+            max-width: 600px;
             text-align: center;
             position: relative;
             box-sizing: border-box;
             height: auto;
             z-index: 1;
+            margin-top: 150px;
         }
 
         .back-button {
@@ -63,7 +63,7 @@
             font-size: 18px;
         }
 
-        h2 {
+        .title {
             color: #333;
             font-size: 24px;
             margin-bottom: 15px;
@@ -106,9 +106,8 @@
             background-color:rgb(215, 211, 211);
         }
 
-        button {
+        .btn-sub {
             background: rgb(200 246 251);
-            color: black;
             padding: 12px;
             border: none;
             border-radius: 10px;
@@ -117,7 +116,7 @@
             transition: background-color 0.3s;
         }
 
-        button:hover {
+        .btn-sub:hover {
             background-color:rgb(208, 227, 248);
         }
 
@@ -163,7 +162,7 @@
                 max-width: 90%;
             }
 
-            h2 {
+            .title {
                 font-size: 22px;
             }
 
@@ -171,7 +170,7 @@
                 font-size: 12px;
             }
 
-            button {
+            .btn-sub {
                 font-size: 14px;
                 padding: 10px;
             }
@@ -187,7 +186,7 @@
                 padding: 15px;
             }
 
-            h2 {
+            .title {
                 font-size: 18px;
             }
 
@@ -195,7 +194,7 @@
                 font-size: 11px;
             }
 
-            button {
+            .btn-sub {
                 font-size: 12px;
                 padding: 8px;
             }
@@ -207,20 +206,16 @@
             ;
         }
     </style>
-</head>
-<body>
+    <div class="container" style="margin-left:120px;">
+        <div class="back-button">
+            <a href="/" style="color:rgb(167, 195, 226); text-decoration: none;"><i class="fas fa-arrow-left"></i></a>
+        </div>
 
-    <div class="back-button">
-        <a href="/" style="color: #007bff; text-decoration: none;"><i class="fas fa-arrow-left"></i></a>
-    </div>
-
-    <div class="container">
-        <h2>Enhance Face Recognition Accuracy</h2>
+        <h2 class="title">Enhance Face Recognition Accuracy</h2>
         <p>Upload more clear images of employees to improve face recognition accuracy. Images from various angles, lighting, and expressions will help enhance the system’s performance.</p>
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            
             <label for="employee">Select Employee:</label>
             <select name="employee" id="employee">
                 {% for employee in employees %}
@@ -232,11 +227,10 @@
             <input type="file" name="image" id="image" accept="image/*" required>
             <small class="file-upload-text">Please select a high-quality image of the employee's face.</small>
 
-            <button type="submit">Upload Image</button>
+            <button type="submit" class="btn-sub">Upload Image</button>
         </form>
 
         <div id="responseMessage"></div>
-
         <div class="employee-embeddings">
             <p></p>
             <p id="employeeEmbeddingCount"></p>
@@ -280,6 +274,4 @@
             document.getElementById('employeeEmbeddingCount').textContent = `Employee Embeddings: ${employeeEmbeddingCount[selectedEmployeeId] || 0}`;
         });
     </script>
-
-</body>
-</html>
+{% endblock %}

@@ -41,6 +41,7 @@ class Employe(models.Model):
     mother_name = models.CharField(max_length=255)
     father_name = models.CharField(max_length=255)
     department = models.ManyToManyField(Department, related_name="employes")
+    image = models.ImageField(upload_to='', blank=True, null=True)  # Thêm dòng này
 
     base_salary = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     allowances = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
@@ -292,4 +293,5 @@ class EmailConfig(models.Model):
     def __str__(self):
         return f"Email Configuration for {self.email_host_user}"
     
+
 ###########################################################

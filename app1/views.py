@@ -114,6 +114,7 @@ def admin_dashboard(request):
     return render(request, 'admin/admin-dashboard.html', context)
 
 ##############################################################
+### WEBCAM ###
 
 def mark_attendance(request):
     return render(request, 'Mark_attendance.html')
@@ -212,7 +213,7 @@ def capture_and_recognize(request):
         np_img = np.frombuffer(image_bytes, np.uint8)
         frame = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
 
-        # Convert BGR to RGB for face recognition
+        # Convert BGR to RGB for face recognition 
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         # Detect and encode faces
@@ -257,14 +258,14 @@ def capture_and_recognize(request):
                 else global_check_out_threshold_seconds
             )
 
-            # Check if the Employe already has an attendance record for today
+            # Check if the Employee already has an attendance record for today
             attendance = Attendance.objects.filter(employe=employe, date=today).first()
 
             if not attendance:
                 # If no attendance record exists for the Employe, create one
                 attendance = Attendance.objects.create(employe=employe, date=today, status='Absent')
 
-            # Handle attendance update for Employe
+            # Handle attendance update for Employee
             if attendance.status == 'Leave':
                 attendance_response.append({
                     'name': name,
@@ -274,6 +275,7 @@ def capture_and_recognize(request):
                     'image_url': '/static/enjoye.jpg',
                     'play_sound': False
                 })
+
             elif attendance.check_in_time is None:
                 # Mark checked-in if not already checked-in
                 attendance.mark_checked_in()
@@ -285,8 +287,10 @@ def capture_and_recognize(request):
                     'check_in_time': attendance.check_in_time.isoformat() if attendance.check_in_time else None,
                     'check_out_time': None,
                     'image_url': '/static/success.png',
-                    'play_sound': True
+                    'play_sound': True,
+                    'sound_type': 'checkin'
                 })
+
             elif attendance.check_out_time is None and current_time >= attendance.check_in_time + timedelta(seconds=employe_threshold_seconds):
                 # Mark checked-out if applicable
                 attendance.mark_checked_out()
@@ -298,8 +302,10 @@ def capture_and_recognize(request):
                     'check_in_time': attendance.check_in_time.isoformat(),
                     'check_out_time': attendance.check_out_time.isoformat(),
                     'image_url': '/static/success.png',
-                    'play_sound': True
+                    'play_sound': True,
+                    'sound_type': 'checkout'
                 })
+
             else:
                 attendance_response.append({
                     'name': name,
@@ -307,7 +313,8 @@ def capture_and_recognize(request):
                     'check_in_time': attendance.check_in_time.isoformat(),
                     'check_out_time': attendance.check_out_time.isoformat() if attendance.check_out_time else None,
                     'image_url': '/static/success.png',
-                    'play_sound': False
+                    'play_sound': False,
+                    'sound_type': None
                 })
 
         return JsonResponse({'attendance': attendance_response}, status=200)
@@ -318,7 +325,7 @@ def capture_and_recognize(request):
 
 def update_leave_attendance(today):
     """
-    Function to update attendance for Employe on leave and those without leave approval (Absent).
+    Function to update attendance for Employee on leave and those without leave approval (Absent).
     """
     # Fetch the leaves approved for today
     approved_leaves = Leave.objects.filter(
@@ -485,6 +492,7 @@ def register_employe(request):
                 joining_date=joining_date,
                 mother_name=mother_name,
                 father_name=father_name,
+                image=image_file,
             )
             employe.save()
 
@@ -563,7 +571,7 @@ def employe_attendance_list(request):
         # Order attendance records by date
         attendance_records = attendance_records.order_by('date')
 
-        # Count the attendance records for this Employe
+        # Count the attendance records for this Employee
         employe_attendance_count = attendance_records.count()
         total_attendance_count += employe_attendance_count  # Add to the total count
 
@@ -614,6 +622,7 @@ def employe_authorize(request, pk):
 
 def employe_edit(request, pk):
     employe = get_object_or_404(Employe, pk=pk)
+    departments = Department.objects.all()
 
     if request.method == 'POST':
         # Updating employee details manually
@@ -630,12 +639,25 @@ def employe_edit(request, pk):
         employe.allowances = request.POST.get('allowances', employe.allowances)
         employe.per_day_salary = request.POST.get('per_day_salary', employe.per_day_salary)
         employe.authorized = request.POST.get('authorized') == 'on'  # Handling checkbox
+        department_ids = request.POST.getlist('department')
+        employe.department.set(department_ids)
 
         employe.save()
         messages.success(request, 'Employee details updated successfully.')
         return redirect('employe-detail', pk=employe.pk)
+    else:
+        # Lấy danh sách id của các phòng ban mà employe đang có
+        department_ids = employe.department.values_list('id', flat=True)
+        
+    #return render(request, 'employe_edit.html', {'employe': employe})
 
-    return render(request, 'employe_edit.html', {'employe': employe})
+    return render(request, 'employe_edit.html', {
+        'employe': employe,
+        'departments': departments,
+        'department_ids': department_ids,
+    })
+
+
 ###########################################################
 # This views is for Deleting Employe
 @staff_member_required
@@ -701,12 +723,13 @@ def send_attendance_notifications(request):
     settings.EMAIL_HOST_USER = email_config.email_host_user
     settings.EMAIL_HOST_PASSWORD = email_config.email_host_password
 
+
     # Filter late Employe who haven't been notified
     late_attendance_records = Attendance.objects.filter(is_late=True, email_sent=False)
     # Filter absent Employe who haven't been notified
     absent_employes = Attendance.objects.filter(status='Absent', email_sent=False)
 
-    # Process late Employe
+    # Process late Employee
     for record in late_attendance_records:
         employe = record.employe
         subject = f"Late Check-in Notification for {employe.name}"
@@ -841,9 +864,11 @@ def capture_and_recognize_with_cam(request):
 
             threshold = cam_config.threshold
 
-            # Âm thanh thông báo
+            # VOICE 
             pygame.mixer.init()
             success_sound = pygame.mixer.Sound('static/success.wav')
+            checkin_sound = pygame.mixer.Sound('static/checkin.wav')  
+            checkout_sound = pygame.mixer.Sound('static/checkout.wav') 
 
             window_name = f"My Camera - {cam_config.location}"
             camera_windows.append(window_name)
@@ -856,7 +881,12 @@ def capture_and_recognize_with_cam(request):
                 if not ret:
                     print(f"Failed to capture frame for camera: {cam_config.name}")
                     break
-
+                   
+                # increase sharp frame by sharpen
+                # sharpen_kernel = np.array([[0, -1, 0],
+                #                            [-1, 5, -1],
+                #                            [0, -1, 0]])
+                # frame = cv2.filter2D(frame, -1, sharpen_kernel)
                 # BGR -> RGB
                 frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 test_face_encodings = detect_and_encode(frame_rgb)
@@ -882,32 +912,35 @@ def capture_and_recognize_with_cam(request):
 
                                         check_out_threshold_seconds = employe.settings.check_out_time_threshold if employe.settings else 0
 
-                                        attendance, _ = Attendance.objects.get_or_create(
-                                            employe=employe, date=now().date()
-                                        )
+                                        attendance = Attendance.objects.filter(employe=employe, date=now().date()).first()
+                                        if not attendance:
+                                            attendance = Attendance.objects.create(employe=employe, date=now().date())
+                                        
 
                                         if attendance.check_in_time is None:
                                             attendance.mark_checked_in()
-                                            success_sound.play()
+                                            checkin_sound.play() 
                                             cv2.putText(frame, f"{name}, checked in.", (50, 50),
                                                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                                            print(f"Checked in for {employe.name}")
+                                            print(f"Hello,{employe.name} check in")
                                         elif attendance.check_out_time is None:
                                             if now() >= attendance.check_in_time + timedelta(seconds=check_out_threshold_seconds):
                                                 attendance.mark_checked_out()
-                                                success_sound.play()
+                                                checkout_sound.play()
                                                 cv2.putText(frame, f"{name}, checked out.", (50, 50),
                                                             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                                                print(f"Checked out for {employe.name}")
+                                                print(f"Goodbye {employe.name}")
                                             else:
                                                 cv2.putText(frame, f"Hello {name}, checked in.", (50, 50),
                                                             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                                                #checkin_sound.play()
                                         else:
                                             cv2.putText(frame, f"Goodbye {name}.", (50, 50),
                                                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                                            #checkout_sound.play()
                                             print(f"Attendance already completed for {employe.name}")
 
-                # Resize frame để hiển thị đẹp
+                # Resize frame 
                 resized_frame = cv2.resize(frame, (desired_width, desired_height))
 
                 if not window_created:

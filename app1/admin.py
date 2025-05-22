@@ -110,3 +110,4 @@ class FaceEmbeddingAdmin(admin.ModelAdmin):
     list_display = ('id', 'employe', 'created_at')
     search_fields = ('employe__name',)
     list_filter = ('created_at',)
+    

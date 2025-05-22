@@ -11,7 +11,7 @@
         /* Global Styles */
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
+            background: linear-gradient(to right,rgb(187, 165, 210),rgb(205, 220, 245));
             color: #fff;
             margin: 0;
             padding: 0;
@@ -121,26 +121,30 @@
     <div class="container">
         <!-- Profile Picture Section -->
         <div class="profile">
-            <img src="{% static 'images/default.png' %}" onerror="this.onerror=null; this.src='{% static 'images/default.png' %}';" alt="Profile Picture">
+            {% if employe.image %}
+                <img src="{% static 'images/imageTrain/' %}{{ employe.image }}" alt="Profile Picture">
+            {% else %}
+                <img src="{% static 'images/default.png' %}" alt="Profile Picture">
+            {% endif %}
             <h2>{{ employe.name }}</h2>
             <span>Employee ID: {{ employe.emp_id }}</span>
         </div>
 
         <!-- Employee Details -->
         <div class="details">
-            <div class="detail"><strong>Email:</strong> {{ employe.email }}</div>
-            <div class="detail"><strong>Phone:</strong> {{ employe.phone_number }}</div>
-            <div class="detail"><strong>Address:</strong> {{ employe.address }}</div>
-            <div class="detail"><strong>DOB:</strong> {{ employe.date_of_birth|date:"d M Y" }}</div>
-            <div class="detail"><strong>Joining Date:</strong> {{ employe.joining_date|date:"d M Y" }}</div>
-            <div class="detail"><strong>Mother's Name:</strong> {{ employe.mother_name }}</div>
-            <div class="detail"><strong>Father's Name:</strong> {{ employe.father_name }}</div>
-            <div class="detail"><strong>Face Data:</strong> {% if employe.face_embedding %} ✅ Yes {% else %} ❌ No {% endif %}</div>
-            <div class="detail"><strong>Authorized:</strong> {% if employe.authorized %} ✅ Yes {% else %} ❌ No {% endif %}</div>
-            <div class="detail"><strong>Base Salary:</strong> ₹{{ employe.base_salary|floatformat:2 }}</div>
-            <div class="detail"><strong>Allowances:</strong> ₹{{ employe.allowances|floatformat:2 }}</div>
-            <div class="detail"><strong>Per Day Salary:</strong> ₹{{ employe.per_day_salary|floatformat:2 }}</div>
-            <div class="detail"><strong>Departments:</strong> 
+            <div class="detail"><strong>Email:&nbsp; </strong> {{ employe.email }}</div>
+            <div class="detail"><strong>Phone:&nbsp; </strong> {{ employe.phone_number }}</div>
+            <div class="detail"><strong>Address:&nbsp; </strong> {{ employe.address }}</div>
+            <div class="detail"><strong>DOB:&nbsp; </strong> {{ employe.date_of_birth|date:"d M Y" }}</div>
+            <div class="detail"><strong>Joining Date:&nbsp; </strong> {{ employe.joining_date|date:"d M Y" }}</div>
+            <div class="detail"><strong>Mother's Name:&nbsp; </strong> {{ employe.mother_name }}</div>
+            <div class="detail"><strong>Father's Name:&nbsp; </strong> {{ employe.father_name }}</div>
+            <div class="detail"><strong>Face Data: &nbsp;</strong> {% if employe.face_embedding %} ✅ Yes {% else %} ❌ No {% endif %}</div>
+            <div class="detail"><strong>Authorized: &nbsp;</strong> {% if employe.authorized %} ✅ Yes {% else %} ❌ No {% endif %}</div>
+            <div class="detail"><strong>Base Salary:&nbsp;</strong> $ {{ employe.base_salary|floatformat:2 }}</div>
+            <div class="detail"><strong>Allowances:&nbsp;</strong> $ {{ employe.allowances|floatformat:2 }}</div>
+            <div class="detail"><strong>Per Day Salary:&nbsp;</strong> $ {{ employe.per_day_salary|floatformat:2 }}</div>
+            <div class="detail"><strong>Departments:&nbsp;</strong> 
                 {% for department in employe.department.all %}
                     {{ department.name }}{% if not forloop.last %}, {% endif %}
                 {% endfor %}
@@ -149,7 +153,7 @@
 
         <!-- Action Buttons -->
         <div class="actions">
-            <a href="{% url 'employe-list' %}" class="back-btn">⬅ Back</a>
+            <a href="{% url 'employe-list' %}" class="back-btn"> Back</a>
             <a href="{% url 'employe-edit' pk=employe.pk %}" class="edit-btn">✏ Edit</a>
             <a href="{% url 'employe-delete' pk=employe.pk %}" class="delete-btn">🗑 Delete</a>
         </div>

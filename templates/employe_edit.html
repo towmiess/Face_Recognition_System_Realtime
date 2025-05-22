@@ -1,4 +1,7 @@
+{% load static %}
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,10 +11,15 @@
     <style>
         /* Global Styles */
         body {
-            font-family: 'Roboto', Arial, sans-serif;
-            background-color: #f3f4f6;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right,rgb(187, 165, 210),rgb(205, 220, 245));
+            color: #fff;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         .container {
             max-width: 700px;
@@ -24,6 +32,34 @@
         }
         .container:hover {
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+        .profile {
+            margin-bottom: 25px;
+        }
+        .profile {
+            display: flex; /*  <-- Add this */
+            align-items: center; /*  <-- Add this (to vertically align items if they have different heights) */
+            gap: 20px; /*  <-- Add this (optional, for spacing between image and text) */
+            margin-bottom: 25px;
+        }
+        .profile-image-container { /*  <-- Add this new class for the image wrapper */
+            flex-shrink: 0; /*  <-- Add this (to prevent image from shrinking) */
+        }
+        .profile img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ecf0f1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+        .profile img:hover {
+            transform: scale(1.1);
+        }
+        .profile-info { 
+            display: flex;
+            flex-direction: column;
         }
         h2 {
             text-align: center;
@@ -43,7 +79,7 @@
         }
         .form-row {
             display: flex;
-            gap: 20px;
+            gap: 50px;
         }
         .form-row .form-group {
             flex: 1;
@@ -65,12 +101,23 @@
         input:focus,
         textarea:focus,
         select:focus {
-            border-color: #4a90e2;
+            border-color:rgb(46, 82, 122);
             box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
             outline: none;
         }
         textarea {
             resize: none;
+        }
+        input[type="checkbox" i] {
+            background-color: initial;
+            cursor: default;
+            appearance: auto;
+            box-sizing: border-box;
+            margin: 3px 3px 3px 4px;
+            padding: initial;
+            border: initial;
+            width: 35px;
+            height: 35px;
         }
         .btn {
             display: inline-block;
@@ -84,7 +131,7 @@
             cursor: pointer;
         }
         .btn-primary {
-            background-color: #4a90e2;
+            background-color:rgb(115, 156, 203);
             color: #fff;
             border: none;
         }
@@ -112,20 +159,44 @@
 </head>
 <body>
     <div class="container">
-        <h2>Edit Employee: {{ employe.name }}</h2>
-        <form method="POST">
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" name="name" value="{{ employe.name }}" required>
+        <!-- Profile Picture Section -->
+        <div class="profile">
+            <div class="profile-image-container"> {% comment %} Wrap image {% endcomment %}
+                {% if employe.image %}
+                    <img src="{% static 'images/imageTrain/' %}{{ employe.image }}" alt="Profile Picture">
+                {% else %}
+                    <img src="{% static 'images/default.png' %}" alt="Profile Picture">
+                {% endif %}
             </div>
-
+            <div class="profile-info"> {% comment %} Wrap text info {% endcomment %}
+                <h2>Edit Employee: {{ employe.emp_id }}</h2>
+                <h2>{{ employe.name }}</h2>
+            </div>
+        </div>
+        <form method="POST" enctype="multipart/form-data"> {% comment %} Added enctype for image upload {% endcomment %}
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" value="{{ employe.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <select name="department" id="department" required>
+                        {% for department in departments %}
+                            <option value="{{ department.id }}"
+                                {% if department.id in department_ids %} selected {% endif %}>
+                                {{ department.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" name="email" value="{{ employe.email }}" required>
             </div>
-
+            
             <div class="form-row">
                 <div class="form-group">
                     <label for="phone_number">Phone Number</label>
@@ -152,30 +223,32 @@
                     <input type="date" name="joining_date" value="{{ employe.joining_date|date:'Y-m-d' }}" required>
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="mother_name">Mother's Name</label>
+                    <input type="text" name="mother_name" value="{{ employe.mother_name }}" required>
+                </div>
 
-            <div class="form-group">
-                <label for="mother_name">Mother's Name</label>
-                <input type="text" name="mother_name" value="{{ employe.mother_name }}" required>
+                <div class="form-group">
+                    <label for="father_name">Father's Name</label>
+                    <input type="text" name="father_name" value="{{ employe.father_name }}" required>
+                </div>
             </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="base_salary">Base Salary</label>
+                    <input type="number" name="base_salary" value="{{ employe.base_salary }}" step="0.01" required>
+                </div>
 
-            <div class="form-group">
-                <label for="father_name">Father's Name</label>
-                <input type="text" name="father_name" value="{{ employe.father_name }}" required>
-            </div>
+                <div class="form-group">
+                    <label for="allowances">Allowances</label>
+                    <input type="number" name="allowances" value="{{ employe.allowances }}" step="0.01">
+                </div>
 
-            <div class="form-group">
-                <label for="base_salary">Base Salary</label>
-                <input type="number" name="base_salary" value="{{ employe.base_salary }}" step="0.01" required>
-            </div>
-
-            <div class="form-group">
-                <label for="allowances">Allowances</label>
-                <input type="number" name="allowances" value="{{ employe.allowances }}" step="0.01">
-            </div>
-
-            <div class="form-group">
-                <label for="authorized">Authorized</label>
-                <input type="checkbox" name="authorized" {% if employe.authorized %}checked{% endif %}>
+                <div class="form-group">
+                    <label for="authorized">Authorized</label>
+                    <input type="checkbox" name="authorized" {% if employe.authorized %}checked{% endif %}>
+                </div>
             </div>
 
             <div class="actions">
