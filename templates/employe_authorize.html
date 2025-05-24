@@ -4,21 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Authorize Employe</title>
+    <title>Authorize Employee</title>
     <link rel="shortcut icon" href="{% static 'images/logo.jpg' %}">
 
     <style>
         /* Global Styles */
         body {
-            font-family: 'Roboto', Arial, sans-serif;
-            background-color: #f3f4f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+            background: linear-gradient(135deg, #d0e5ee, #b5dff1, #d0d8ff);
+            color: #0e455f;
             margin: 0;
             padding: 0;
         }
         .container {
             max-width: 600px;
             margin: 40px auto;
-            background-color: #fff;
+            background: rgba(255, 255, 255, 0.3);
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -29,21 +30,22 @@
         }
         h1 {
             text-align: center;
-            color: #4a90e2;
+            color:rgb(107, 157, 213);
             font-size: 1.8rem;
             margin-bottom: 20px;
         }
-        .student-details {
+        .employe-details {
             text-align: center;
             margin-bottom: 30px;
         }
-        .student-image img {
-            width: 120px;
-            height: 120px;
+        .employe-image img {
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            border: 3px solid #4a90e2;
-            margin-top: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            border: 5px solid #ecf0f1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
         }
         .detail {
             margin-bottom: 15px;
@@ -104,13 +106,13 @@
             transition: transform 0.3s;
         }
         input[type="checkbox"]:checked + label::before {
-            background-color: #4a90e2;
+            background-color:rgb(151, 192, 238);
         }
         input[type="checkbox"]:checked + label::after {
             transform: translateX(26px);
         }
         button[type="submit"] {
-            background-color: #4a90e2;
+            background-color:rgb(122, 180, 246);
             color: #fff;
             border: none;
             padding: 12px 30px;
@@ -148,13 +150,17 @@
 </head>
 <body>
     <div class="container">
-        <h1>Authorize Employe</h1>
-        <div class="student-details">
-            <div class="student-image">
-                <img src="{%static 'images/default.png'%}" alt="{{ student.name }}">
+        <h1>Authorize Employee</h1>
+        <div class="employe-details">
+            <div class="employe-image">
+                {% if employe.image %}
+                <img src="{% static 'images/imageTrain/' %}{{ employe.image }}" alt="Profile Picture">
+                {% else %}
+                    <img src="{% static 'images/default.png' %}" alt="Profile Picture">
+                {% endif %}
             </div>
-            <div class="detail"><strong>Name:</strong> {{ student.name }}</div>
-            <div class="detail"><strong>Authorized:</strong> {% if student.authorized %} Yes {% else %} No {% endif %}</div>
+            <div class="detail"><strong>Name:</strong> {{ employe.name }}</div>
+            <div class="detail"><strong>Authorized:</strong> {% if employe.authorized %} Yes {% else %} No {% endif %}</div>
         </div>
         <form method="post">
             {% csrf_token %}

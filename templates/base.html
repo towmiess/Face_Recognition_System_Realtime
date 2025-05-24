@@ -60,7 +60,7 @@
 
     <!-- Footer -->
     <footer>
-        <p style="font-size: 13px; color: lightgray;">&copy; 2025 Attendance System by Towmiess</p>
+        <p>&copy; 2025 Attendance System by Towmiess</p>
 
     </footer>
 
@@ -84,4 +84,140 @@
     </script>
     {% block extra_js %}{% endblock %}
 </body>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #d0e5ee, #b5dff1, #d0d8ff);
+        color: #0e455f;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+        /* Sidebar Styles */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 250px;
+        height: 100%;
+        background: linear-gradient(135deg, #d0e5ee, #b5dff1, #d0d8ff);
+        color: hsl(57, 58.20%, 30.00%);
+        font-family: inherit;
+        padding: 20px;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+        transform: translateX(-100%);
+        transition: transform 0.3s, box-shadow 0.3s;
+        z-index: 1000;
+        overflow-y: auto;
+    }
+    .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    }
+    .sidebar h4 {
+        font-size: 1.8em;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: hwb(209 29% 41%);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        text-align: center;
+    }
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        margin-bottom: 15px;
+        text-decoration: none;
+        color: hwb(209 29% 41%);
+        font-size: 1.1em;
+        border-radius: 8px;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+    .sidebar a i {
+        margin-right: 10px;
+        font-size: 1.3em;
+    }
+    .sidebar a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: translateX(10px);
+        color: hsl(57, 59.30%, 44.30%);
+    }
+    .sidebar a.active {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+    footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.07);
+        color:rgb(149, 149, 149);
+        text-align: center;
+        height: 30px;
+        padding: 10px;
+        z-index: 100;
+        font-size: 13px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    th, td {
+        padding: 12px 15px;
+        text-align: center;
+        border: 1px solid #444;
+        transition: background-color 0.3s;
+        background: rgba(255, 255, 255, 0.3);
+    }
+    th {
+        background-color: #4CAF50;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    td {
+        background-color: #daf7ffc7;
+    }
+    tr:hover {
+        background-color: #71bccdc7;
+        transform: translateY(-5px);
+    }
+    tr:nth-child(even) {
+        background: rgba(151, 203, 234, 0.57);
+    }
+
+    .hero-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #d0e5ee, #b5dff1, #d0d8ff);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+        text-align: center;
+        padding: 60px 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.603);
+    }
+    .hero-section h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+        color: hwb(62 18% 20%);
+        text-shadow: 2px 2px 6px rgba(160, 160, 160, 0.338);
+    }
+    .hero-section p {
+        font-size: 1.5em;
+        margin-bottom: 40px;
+        opacity: 0.9;
+        line-height: 1.5;
+        color: #656262;
+        max-width: 800px;
+    }
+
+</style>
 </html>

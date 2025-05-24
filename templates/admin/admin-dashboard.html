@@ -3,6 +3,14 @@
 {% block title %}Admin Dashboard{% endblock %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% block content %}
+
+  <style>
+    .card-link:hover {
+        color: #fff;
+        box-shadow: none;
+        background: none;
+    }
+  </style>
   <!-- Main Content -->
   <div class="main-content" id="main-content">
     <div class="hero-section">
@@ -10,50 +18,50 @@
         <h3>Mark Face Attendance System</h3>
         <div class="buttons">
             <div class="card">
-                <a href="{% url 'employe-list' %}">
+                <a class="card-link" href="{% url 'employe-list' %}">
                     <i class="fas fa-users"></i>
                     <p>Employees: {{ total_employes }}</p>
                 </a>
             </div>
                       
             <div class="card">
-                <a href="{% url 'employe_attendance_list' %}">
+                <a class="card-link" href="{% url 'employe_attendance_list' %}">
                     <i class="fas fa-calendar-check"></i>
                     <p>Attendance: {{ total_attendance }}</p>
                 </a>
             </div>
             <div class="card">
-                <a href="{% url 'employe_attendance_list' %}">
+                <a class="card-link" href="{% url 'employe_attendance_list' %}">
                     <i class="fas fa-check" style="color: green;"></i>
                     <p>Present: {{ total_present }}</p>
                 </a>
             </div>
             <div class="card">
-                <a href="{% url 'employe_attendance_list' %}">
+                <a class="card-link" href="{% url 'employe_attendance_list' %}">
                     <i class="fas fa-times" style="color: red;"></i>
                     <p>Absent: {{ total_absent }}</p>
                 </a>
             </div>
             <div class="card">
-                <a href="{% url 'employe_attendance_list' %}">
+                <a class="card-link" href="{% url 'employe_attendance_list' %}">
                     <i class="fas fa-clock" style="color: red;"></i>
                     <p>Late Check-ins: {{ total_late_checkins }}</p>
                 </a>
             </div>
             <div class="card">
-                <a href="{% url 'employe_attendance_list' %}">
+                <a class="card-link" href="{% url 'employe_attendance_list' %}">
                     <i class="fas fa-sign-in-alt"></i>
                     <p>Check-ins: {{ total_checkins }}</p>
                 </a>
             </div>
             <div class="card">
-                <a href="{% url 'employe_attendance_list' %}">
+                <a class="card-link" href="{% url 'employe_attendance_list' %}">
                     <i class="fas fa-sign-out-alt"></i>
                     <p>Check-outs: {{ total_checkouts }}</p>
                 </a>
             </div>
             <div class="card">
-                <a href="{% url 'camera_config_list' %}">
+                <a class="card-link" href="{% url 'camera_config_list' %}">
                     <i class="fas fa-video"></i>
                     <p>Cameras: {{ total_cameras }}</p>
                 </a>

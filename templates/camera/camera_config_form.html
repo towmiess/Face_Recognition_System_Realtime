@@ -11,9 +11,9 @@
     <!-- CSS for styling the form -->
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1f1c2c, #928DAB); /* Gradient background */
-            color: #FFD700; /* Yellow text */
+            background: linear-gradient(135deg, #d0e5ee, #b5dff1, #d0d8ff);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+            color:rgb(24, 90, 54); /* Yellow text */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,7 +22,7 @@
         }
 
         .form-container {
-            background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 15px;
             padding: 40px;
             width: 100%;
@@ -37,7 +37,7 @@
             margin-bottom: 30px;
             font-size: 2.5rem;
             letter-spacing: 2px;
-            color: #FFD700; /* Yellow text */
+            color:rgb(29, 73, 107); /* Darker text color */
             text-transform: uppercase;
             font-weight: bold;
         }
@@ -47,7 +47,7 @@
             margin-bottom: 20px;
             border-radius: 5px;
             background-color: rgba(255, 255, 0, 0.2); /* Light yellow background for alerts */
-            color: #FFD700; /* Yellow text */
+            color:rgb(158, 150, 75); /* Yellow text */
             font-size: 1rem;
             font-weight: 500;
         }
@@ -56,16 +56,15 @@
             font-weight: 600;
             margin-bottom: 10px;
             display: block;
-            color: #FFD700; /* Yellow text */
+            color:rgb(36, 103, 23); /* Yellow text */
             font-size: 1rem;
         }
 
         .form-row {
             display: flex;
-            gap: 20px; /* Space between the fields */
+            gap: 50px; /* Space between the fields */
             margin-bottom: 25px;
         }
-
         .form-row > div {
             flex: 1; /* Makes each field take equal width */
         }
@@ -73,7 +72,7 @@
         input[type="text"], input[type="number"] {
             width: 100%;
             padding: 15px;
-            border: 2px solid #FFD700;
+            border: 2px solid rgba(122, 110, 41, 0.32);
             border-radius: 8px;
             font-size: 1rem;
             background-color: rgba(255, 255, 255, 0.2);
@@ -82,15 +81,15 @@
         }
 
         input[type="text"]:focus, input[type="number"]:focus {
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); /* Yellow focus border */
+            box-shadow: 0 0 10px rgba(106, 95, 31, 0.8); /* Yellow focus border */
             outline: none;
-            border-color: #FFCC00; /* Yellow border on focus */
+            border-color:rgb(141, 137, 121); /* Yellow border on focus */
         }
 
         button {
-            width: 100%;
+            width: 30%;
             padding: 15px;
-            background-color: #FFD700; /* Yellow button */
+            background-color:rgb(137, 221, 156); /* Yellow button */
             border: none;
             border-radius: 8px;
             font-size: 1.2rem;
@@ -102,26 +101,26 @@
         }
 
         button:hover {
-            background-color: #FFC107; /* Darker yellow on hover */
+            background-color:rgb(188, 192, 187); /* Darker yellow on hover */
             transform: translateY(-3px); /* Slight lift effect on hover */
         }
 
         .nav-button {
             display: inline-block;
-            margin-top: 15px;
             padding: 12px 18px;
-            background-color: #FFD700;
+            background-color:rgb(228, 213, 125);
             color: #000;
             border: none;
+            height: 55px;
             border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: background 0.3s ease, transform 0.3s ease;
         }
 
         .nav-button:hover {
-            background-color: #FFC107;
+            background-color:rgb(191, 196, 135);
             transform: scale(1.05);
         }
 
@@ -160,7 +159,8 @@
             }
         }
     </style>
-
+</head>
+<body>
     <div class="form-container">
         <h1>{{ config.name|default:"Add New Camera" }}</h1>
         
@@ -175,31 +175,32 @@
             {% csrf_token %}
             
             <div class="form-row">
-                <div>
-                    <label for="name">Camera Name:</label>
-                    <input type="text" id="name" name="name" value="{{ config.name|default:'' }}" placeholder="Enter camera name" required>
-                </div>
-                <div>
-                    <label for="camera_source">Camera Source:</label>
-                    <input type="text" id="camera_source" name="camera_source" value="{{ config.camera_source|default:'' }}" placeholder="Enter 0 for default or IP camera URL" required>
-                </div>
+            <div>
+                <label for="name">Camera Name:</label>
+                <input type="text" id="name" name="name" value="{{ config.name|default:'' }}" placeholder="Enter camera name" required style="color:#000;">
+            </div>
+            <div>
+                <label for="camera_source">Camera Source:</label>
+                <input type="text" id="camera_source" name="camera_source" value="{{ config.camera_source|default:'' }}" placeholder="Enter 0 for default or IP camera URL" required style="color:#000;">
+            </div>
             </div>
 
             <div class="form-row">
-                <div>
-                    <label for="threshold">Threshold:</label>
-                    <input type="number" step="0.01" id="threshold" name="threshold" value="{{ config.threshold|default:0.6 }}" placeholder="Enter threshold value (0.0 to 1.0)" required>
-                </div>
-                <div>
-                    <label for="location">Location:</label>
-                    <input type="text" id="location" name="location" value="{{ config.location|default:'' }}" placeholder="Enter camera location (optional)">
-                </div>
+            <div>
+                <label for="threshold">Threshold:</label>
+                <input type="number" step="0.01" id="threshold" name="threshold" value="{{ config.threshold|default:0.6 }}" placeholder="Enter threshold value (0.0 to 1.0)" required style="color:#000;">
+            </div>
+            <div>
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" value="{{ config.location|default:'' }}" placeholder="Enter camera location (optional)">
+            </div>
             </div>
             
-            <button type="submit">Save</button>
+            <div style="display: flex; gap: 20px; justify-content: center; align-items: center; margin-top: 20px;">
+                <button type="submit">Save</button>
+                <button type="button" class="nav-button" onclick="window.location.href='{% url "camera_config_list" %}'">Back to List</button>
+            </div>
         </form>
-        
-        <button class="nav-button" onclick="location.href='{% url 'camera_config_list' %}'">Back to List</button>
     </div>
 </body>
 </html>

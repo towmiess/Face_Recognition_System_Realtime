@@ -4,15 +4,15 @@
 <!-- CSS for styling the table and layout -->
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            color: #FFD700; /* Yellow text */
+            background: linear-gradient(135deg, #d0e5ee, #b5dff1, #d0d8ff);
+            color: #0e455f;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
             display: flex;
             justify-content: center;
             align-items: flex-start; /* Align items to the top */
             height: 100vh;
             margin: 0;
             padding: 20px;
-            background-color: #000000; /* Black background */
         }
 
         .container {
@@ -28,11 +28,10 @@
         }
         
         footer {
-            background-color: #1e1e1e;
+            background-color:rgba(255, 255, 255, 0);
             text-align: center;
             padding: 20px;
             font-size: 0.9em;
-            border-top: 1px solid #333;
             margin-top: auto;
             width: 100%;
         }
@@ -40,7 +39,7 @@
             text-align: center;
             margin-bottom: 20px;
             font-size: 2.5rem;
-            color: #FFD700; /* Yellow text */
+            color:rgb(126, 117, 62); /* Yellow text */
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
@@ -73,14 +72,14 @@
         td {
             font-weight: 400;
             border-bottom: 1px solid #333;
-            color: #FFD700; /* Yellow text */
+            color:rgb(106, 94, 25); /* Yellow text */
         }
 
         .create-new-btn, .back-home-btn {
             display: inline-block;
             margin: 20px 0;
             padding: 12px 20px;
-            background-color: #FFD700; /* Yellow button */
+            background-color:rgb(255, 255, 136); /* Yellow button */
             color: #000; /* Black text for contrast */
             text-align: center;
             text-decoration: none;
@@ -151,8 +150,8 @@
                     <td>{{ config.camera_source }}</td>
                     <td>{{ config.threshold }}</td>
                     <td>
-                        <a href="{% url 'camera_config_update' config.id %}" style="color: #FFD700;">Edit</a> |
-                        <a href="{% url 'camera_config_delete' config.id %}" style="color: #FFD700;">Delete</a>
+                        <a href="{% url 'camera_config_update' config.id %}" style="color:rgb(94, 137, 87);">Edit</a> |
+                        <a href="{% url 'camera_config_delete' config.id %}" style="color:rgba(27, 119, 11, 1);">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}

@@ -121,6 +121,7 @@ def mark_attendance(request):
 
 #############################################################
 # Initialize MTCNN and InceptionResnetV1
+
 mtcnn = MTCNN(keep_all=True)
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
 
@@ -1150,19 +1151,24 @@ def employe_attendance(request):
     
     if search_query:
         attendance_records = attendance_records.filter(Q(employe__name__icontains=search_query) | 
-                                                      Q(employe__roll_no__icontains=search_query))
+                                                      Q(employe__emp_id__icontains=search_query))
     
     if date_filter:
         attendance_records = attendance_records.filter(date=date_filter)
     # Add overtime to the context
     for record in attendance_records:
         record.overtime_hours = record.calculate_overtime()
+    
+    # Retrieve the departments for the logged-in employee
+    departments = employe.department.all()
 
     # Render the attendance records
     return render(request, 'employe/employe_attendance.html', {
         'employe_attendance_data': attendance_records,
         'search_query': search_query,
-        'date_filter': date_filter
+        'date_filter': date_filter,
+        'employe' : employe,
+        'departments': departments,
     })
 
 
@@ -1384,8 +1390,14 @@ def employe_leave_list(request):
     employe_profile = Employe.objects.get(user=request.user)
     # Get the leave records for the employe
     employe_leaves = Leave.objects.filter(employe=employe_profile)
+    # Get the departments associated with the employe
+    departments = employe_profile.department.all()
 
-    return render(request, 'employe/leave_list.html', {'employe_leaves': employe_leaves})
+    return render(request, 'employe/leave_list.html', {
+        'employe_leaves': employe_leaves,
+        'employe': employe_profile,
+        'departments': departments,
+    })
 
 @login_required
 def apply_leave(request):
@@ -1525,6 +1537,8 @@ def employe_salary_detail(request):
 
     # Fetch salary details for the logged-in employee
     salary_detail = Salary.objects.filter(employee=employe)
+    # Return the departments associated with the employe
+    departments = employe.department.all()
 
     # Filtering by month and year
     month = request.GET.get('month')
@@ -1539,11 +1553,13 @@ def employe_salary_detail(request):
     months = list(range(1, 13))  # Months from 1 to 12
     years = list(range(2022, 2026))  # Years from 2022 to 2025
 
-    # Render the salary details
+    # Render the salary details along with department data
     return render(request, 'employe/salary_details.html', {
         'salary_detail': salary_detail,
         'months': months,
         'years': years,
         'selected_month': month,
         'selected_year': year,
+        'employe': employe,
+        'departments': departments,
     })

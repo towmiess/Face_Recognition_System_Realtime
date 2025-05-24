@@ -10,14 +10,15 @@
 
 <style>
     body {
-        background-color: #000000; /* Black background */
-        color: #ffffff; /* White text for contrast */
+        background: linear-gradient(135deg, #d0e5ee, #b5dff1, #d0d8ff);
+        color: #0e455f;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
     }
     .container {
         margin-top: 30px;
         width: 100%;
         max-width: 1200px;
-        background: rgb(0,0,0); /* Dark background for container */
+        background: rgba(255, 255, 255, 0.3);
     }
 
     h1 {
@@ -36,8 +37,11 @@
     }
 
     .table th {
-        background-color:rgb(95, 171, 253);
+        background-color:rgb(92, 151, 213);
         color: white;
+    }
+    .table td{
+        color: #0e455f; 
     }
     .table {
         --bs-table-color: #ffffff;
@@ -45,7 +49,7 @@
         --bs-table-border-color: var(--bs-border-color);
         --bs-table-accent-bg: transparent;
         --bs-table-striped-color: var(--bs-body-color);
-        --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+        --bs-table-striped-bg: rgba(37, 37, 37, 0.05);
         --bs-table-active-color: var(--bs-body-color);
         --bs-table-active-bg: rgba(0, 0, 0, 0.1);
         --bs-table-hover-color: #0d4e8f;
@@ -54,7 +58,7 @@
     .no-policies {
         text-align: center;
         color:rgb(37, 36, 36);
-        font-style: italic;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
     }
 
     .btn-action {
@@ -63,10 +67,10 @@
 
     .card {
         border: none;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(209, 206, 206, 0.3);
         margin-bottom: 30px;
         width: auto ;
-        background-color:rgb(5, 5, 5);
+        background: rgba(255, 255, 255, 0.3);
 
     }
 
@@ -82,10 +86,10 @@
         top: 15px;
     }
     .card-header a {
-        color:rgb(17, 17, 17);
+        background: rgba(255, 255, 255, 0.41);
     }
     .card-header a:hover {
-        color: rgb(0, 0, 0);
+        color: rgba(164, 164, 164, 0.01);
     }
     /* Custom message styles */
     .alert-success {
@@ -126,7 +130,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background-color: rgb(44, 43, 43);
+        background-color: rgba(43, 44, 44, 0);
     }
 </style>
 
@@ -137,7 +141,7 @@
             <a href="{% url 'home' %}" class="back-button" title="Back to Home" >
                 <i class="fas fa-home"></i>
             </a>
-            <h1 class="text-center mb-4" style="color: rgb(255, 253, 253);">Late Check-In Policies</h1>
+            <h1 class="text-center mb-4">Late Check-In Policies</h1>
 
             
         </div>

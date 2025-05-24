@@ -5,20 +5,20 @@
     padding: 0;
 }
 
-body {
-    font-family: 'Arial', sans-serif;
+body,html {
+    font-family: sans-serif;
     margin: 0;
     display: flex;
     height: 100vh;
-    background-color: #181818;
-    color: #fff;
+    background: linear-gradient(135deg, #d0e5ee, #b5dff1, #d0d8ff);
+    color:#0e455f;
     overflow: hidden;
 }
 
 /* Sidebar */
 .sidebar {
     width: 250px;
-    background-color: #2b2b2b;
+    background: linear-gradient(135deg, #d0e5ee, #b5dff1, #d0d8ff);
     padding: 20px;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
     display: flex;
@@ -30,12 +30,12 @@ body {
 .sidebar h1 {
     font-size: 28px;
     margin-bottom: 30px;
-    color: hsl(61, 71%, 58%);
+    color: hsl(101, 51%, 29%);
     text-align: center;
 }
 
 .sidebar button {
-    color: #fff;
+    background: rgba(195, 255, 213, 0.592);
     font-size: 16px;
     padding: 14px;
     margin: 10px 0;
@@ -65,9 +65,9 @@ body {
 }
 
 #set-class-button {
-    background-color: #007bff;
+    background-color: #729ea8ae;
     /* Blue */
-    color: #fff;
+    color: #184226;
     font-size: 16px;
     padding: 14px;
     margin: 10px 0;
@@ -79,7 +79,7 @@ body {
 }
 
 #set-class-button:hover {
-    background-color: #0056b3;
+    background-color: #ffffff98;
     /* Darker blue on hover */
 }
 
@@ -88,10 +88,10 @@ body {
     padding: 12px;
     font-size: 16px;
     border-radius: 8px;
-    border: 1px solid #333;
+    border: 1px solid #33333379;
     margin-bottom: 20px;
-    background-color: #333;
-    color: #fff;
+    background: rgba(255, 255, 255, 0.675);
+    color: #4a5d85f7;
     transition: all 0.3s ease;
 }
 
@@ -112,14 +112,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #141414;
+    background: linear-gradient(135deg, #d0e5ee, #b5dff1, #d0d8ff);
     position: relative;
     padding: 20px;
+    margin-left: 120px;
     overflow: hidden;
 }
 
 .video-container img {
-    border: 3px solid #333;
+    border: 3px solid #333333a0;
     border-radius: 8px;
     transition: transform 0.3s ease;
 }

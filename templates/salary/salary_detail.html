@@ -7,250 +7,250 @@
     <link rel="shortcut icon" href="/static/images/logo.jpg">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-     body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-}
+        body {
+            background: linear-gradient(135deg, #d0e5ee, #b5dff1, #d0d8ff);
+            color: #0e455f;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+            margin: 0;
+            padding: 0;
+        }
 
-/* Adjust container to fit A4 size */
-.salary-container {
-    width: 21cm;
-    height: 29.7cm;
-    margin: 0 auto;
-    padding: 30px;
-    background: #fff;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    page-break-after: always;
-}
+        /* Adjust container to fit A4 size */
+        .salary-container {
+            width: 21cm;
+            height: 29.7cm;
+            margin: 0 auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            page-break-after: always;
+        }
 
-/* Header styling */
-.salary-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
+        /* Header styling */
+        .salary-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-.company-info {
-    font-size: 16px;
-    text-align: left;
-    margin-bottom: 20px;
-}
+        .company-info {
+            font-size: 16px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
 
-.company-info .company-name {
-    font-size: 24px;
-    font-weight: bold;
-    color: hsla(53, 100%, 50%, 0.924);
-}
+        .company-info .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: hsla(53, 100%, 50%, 0.924);
+        }
 
-.salary-header h4 {
-    font-weight: bold;
-    color: #007BFF;
-    margin-top: 10px;
-    font-size: 22px;
-}
+        .salary-header h4 {
+            font-weight: bold;
+            color: rgb(53, 95, 139);
+            margin-top: 10px;
+            font-size: 22px;
+        }
 
-.salary-header p {
-    font-size: 18px;
-    margin-top: 5px;
-}
+        .salary-header p {
+            font-size: 18px;
+            margin-top: 5px;
+        }
 
-/* Table styling */
-.salary-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+        /* Table styling */
+        .salary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0;
+        }
 
-.salary-table th, .salary-table td {
-    text-align: left;
-    padding: 16px;
-    font-size: 18px;
-    border: 1px solid #ddd;
-}
+        .salary-table th, .salary-table td {
+            text-align: left;
+            padding: 16px;
+            font-size: 18px;
+            border: 1px solid #ddd;
+            vertical-align: middle;
+        }
 
-.salary-table th {
-    background-color: #f1f1f1;
-    font-weight: bold;
-}
+        .salary-table th {
+            background-color: #f1f1f1;
+            font-weight: bold;
+            text-align: center;
+        }
 
-.highlight-row {
-    background-color: #f9f9f9;
-}
+        .highlight-row {
+            background-color: #f9f9f9;
+        }
 
-/* Net salary styling */
-.net-salary {
-    font-size: 18px;
-    font-weight: bold;
-    color: green;
-}
+        /* Net salary styling */
+        .net-salary {
+            font-size: 18px;
+            font-weight: bold;
+            color: green;
+        }
 
-/* Back button */
-.btn-back {
-    text-align: right;
-    margin-top: 30px;
-}
+        /* Back button */
+        .btn-back {
+            text-align: right;
+            margin-top: 30px;
+        }
 
-.btn-back a {
-    text-decoration: none;
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-}
+        .btn-back a {
+            text-decoration: none;
+            background-color: rgb(165, 189, 215);
+            color: hwb(209 29% 41%);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
 
-.btn-back a:hover {
-    background-color: #0056b3;
-}
+        .btn-back a:hover {
+            background-color: #0056b3;
+            color: #fff;
+        }
 
-/* Print-specific styles */
-@media print {
-    body {
-        margin: 0;
-        padding: 0;
-        font-size: 16px !important; /* Increase base font size */
-    }
+        /* Print-specific styles */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                font-size: 16px !important;
+            }
 
-    .salary-container {
-        width: 100%;
-        height: auto;
-        margin: 0;
-        padding: 20px;
-        box-shadow: none;
-        page-break-after: always;
-    }
+            .salary-container {
+                width: 100%;
+                height: auto;
+                margin: 0;
+                padding: 20px;
+                box-shadow: none;
+                page-break-after: always;
+            }
 
-    .company-info .company-name {
-        font-size: 28px !important;
-    }
+            .company-info .company-name {
+                font-size: 28px !important;
+            }
 
-    .salary-header h4 {
-        font-size: 24px !important;
-    }
+            .salary-header h4 {
+                font-size: 24px !important;
+            }
 
-    .salary-header p {
-        font-size: 18px !important;
-    }
+            .salary-header p {
+                font-size: 18px !important;
+            }
 
-    .salary-table th, .salary-table td {
-        font-size: 16px !important;
-        padding: 12px !important;
-    }
+            .salary-table th, .salary-table td {
+                font-size: 16px !important;
+                padding: 12px !important;
+            }
 
-    .net-salary {
-        font-size: 22px !important;
-    }
+            .net-salary {
+                font-size: 22px !important;
+            }
 
-    .btn-back {
-        display: none;
-    }
+            .btn-back {
+                display: none;
+            }
 
-    /* Prevent unwanted page breaks inside tables */
-    table, tr, td, th {
-        page-break-inside: avoid;
-    }
-}
-
+            table, tr, td, th {
+                page-break-inside: avoid;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="container salary-container">
+        <!-- Company Info Section -->
+        <div class="company-info">
+            <div class="company-name">💰SALARY SYSTEM 💰</div>
+            <div><em>Posts and Telecommunications Institute of Technology</em></div>
+        </div>
 
-<div class="container salary-container">
-    <!-- Company Info Section -->
-    <div class="company-info">
-        <div class="company-name">💰SALARY SYSTEM 💰</div>
-        <div><em>Posts and Telecommunications Institute of Technology</em></div>
+        <!-- Salary Header Section -->
+        <div class="salary-header">
+            <h4>Salary Slip for {{ salary.employee.name }}</h4>
+            <p><strong>Employee ID:</strong> {{ salary.employee.emp_id }}</p>
+            <p><strong>Month:</strong> {{ salary.month }}/{{ salary.year }}</p>
+        </div>
+
+        <!-- Salary Breakdown Table -->
+        <table class="table table-bordered salary-table">
+            <thead>
+                <tr>
+                    <th colspan="2">Salary Breakdown</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="highlight-row">
+                    <td style="width:60%"><strong>💲Base Salary</strong></td>
+                    <td style="width:40%"> ${{ salary.base_salary }}</td>
+                </tr>
+                <tr>
+                    <td><strong>💶Allowances</strong></td>
+                    <td>${{ salary.allowances }}</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td><strong>🕞Overtime Hours Worked</strong></td>
+                    <td>
+                        <span class="overtime" data-overtime="{{ salary.overtime_hours }}">{{ salary.overtime_hours }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>💲Bonus</strong></td>
+                    <td>${{ salary.bonus }}</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td><strong>📈 Overtime Rate</strong></td>
+                    <td>${{ salary.overtime_rate }}</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td><strong>🪙Total Salary</strong></td>
+                    <td>${{ salary.gross_salary }}</td>
+                </tr>
+                <tr>
+                    <td><strong>💸Tax Deductions</strong></td>
+                    <td>${{ salary.tax_deductions }}</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td><strong>Other Deductions</strong></td>
+                    <td>${{ salary.other_deductions }}</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td><strong>⭕ Absent Deductions</strong></td>
+                    <td>${{ salary.absence_deduction }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Net Salary</strong></td>
+                    <td class="net-salary">${{ salary.net_salary }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Back Button -->
+        <div class="btn-back">
+            <a href="{% url 'salary_list' %}" class="btn btn-primary">Back to Salary List</a>
+        </div>
     </div>
 
-    <!-- Salary Header Section -->
-    <div class="salary-header">
-        <h4>Salary Slip for {{ salary.employee.name }}</h4>
-        <p><strong>Employee ID:</strong> {{ salary.employee.emp_id }}</p>
-        <p><strong>Month:</strong> {{ salary.month }}/{{ salary.year }}</p>
-    </div>
-
-    <!-- Salary Breakdown Table -->
-    <table class="table table-bordered salary-table">
-        <thead>
-            <tr>
-                <th colspan="2">Salary Breakdown</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="highlight-row">
-                <td><strong>💲Base Salary</strong></td>
-                <td>${{ salary.base_salary }}</td>
-            </tr>
-            <tr>
-                <td><strong>💶Allowances</strong></td>
-                <td>${{ salary.allowances }}</td>
-            </tr>
-            <tr class="highlight-row">
-                <td><strong>🕞Overtime Hours Worked</strong></td>
-                <td><span class="overtime" data-overtime="{{ salary.overtime_hours }}">{{ salary.overtime_hours }}</span></td>
-            </tr>
-            <tr>
-                <td><strong>💲Bonus</strong></td>
-                <td>${{ salary.bonus }}</td>
-            </tr>
-            <tr class="highlight-row">
-                <td><strong>📈 Overtime Rate</strong></td>
-                <td>${{ salary.overtime_rate }}</td>
-            </tr>
-
-            <tr class="highlight-row">
-                <td><strong>🪙Total Salary</strong></td>
-                <td>${{ salary.gross_salary }}</td>
-            </tr>
-            <tr>
-                <td><strong> 💸Tax Deductions</strong></td>
-                <td>${{ salary.tax_deductions }}</td>
-            </tr>
-            <tr class="highlight-row">
-                <td><strong>Other Deductions</strong></td>
-                <td>${{ salary.other_deductions }}</td>
-            </tr>
-            <tr class="highlight-row">
-                <td><strong>⭕ Absent Deductions</strong></td>
-                <td>${{ salary.absence_deduction }}</td>
-            </tr>
-            <tr>
-                <td><strong>Net Salary</strong></td>
-                <td class="net-salary">${{ salary.net_salary }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <!-- Back Button -->
-    <div class="btn-back">
-        <a href="{% url 'salary_list' %}" class="btn btn-primary"> Back to Salary List</a>
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- JavaScript to Format Overtime -->
-<script>
-    function formatOvertime(decimalHours) {
-        if (!decimalHours || isNaN(decimalHours)) return "0h 0m 0s";
-
-        let totalSeconds = Math.round(decimalHours * 3600);
-        let hours = Math.floor(totalSeconds / 3600);
-        let minutes = Math.floor((totalSeconds % 3600) / 60);
-        let seconds = totalSeconds % 60;
-
-        return `${hours}h ${minutes}m ${seconds}s`;
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        let overtimeCells = document.querySelectorAll(".overtime");
-
-        overtimeCells.forEach(cell => {
-            let overtimeValue = parseFloat(cell.getAttribute("data-overtime").trim());
-            cell.innerText = formatOvertime(overtimeValue);
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- JavaScript to Format Overtime -->
+    <script>
+        function formatOvertime(decimalHours) {
+            if (!decimalHours || isNaN(decimalHours)) return "0h 0m 0s";
+            let totalSeconds = Math.round(decimalHours * 3600);
+            let hours = Math.floor(totalSeconds / 3600);
+            let minutes = Math.floor((totalSeconds % 3600) / 60);
+            let seconds = totalSeconds % 60;
+            return `${hours}h ${minutes}m ${seconds}s`;
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            let overtimeCells = document.querySelectorAll(".overtime");
+            overtimeCells.forEach(cell => {
+                let overtimeValue = parseFloat(cell.getAttribute("data-overtime").trim());
+                cell.innerText = formatOvertime(overtimeValue);
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

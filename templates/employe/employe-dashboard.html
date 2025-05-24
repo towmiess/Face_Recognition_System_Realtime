@@ -3,19 +3,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Dashboard</title>
     <link rel="shortcut icon" href="{% static 'images/logo.jpg' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+   <!--<link rel="stylesheet" href="{% static 'style.css' %}" >-->
 </head>
-
 <body>
     <!-- Header -->
-    <header>
-        <div class="logo" >
-            <img src="{% static 'images/logo.jpg' %}" alt="Logo" style="width: 40px; height: auto;">
+    <header class="main-navbar">
+        <div class="navbar-logo">
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo" width="40px">
             <h2><span class="danger">G5</span>_<span class="danger">PTIT</span></h2>
         </div>
         <div class="navbar">
@@ -23,16 +22,15 @@
                 <span class="material-icons-sharp">home</span>
                 <h3>Home</h3>
             </a>
-            <a href="{%url 'employe_attendance'%}" onclick="timeTableAll()">
+            <a href="{% url 'employe_attendance' %}" onclick="timeTableAll()">
                 <span class="material-icons-sharp">today</span>
                 <h3>Attendance</h3>
             </a>
-            <a href="{%url 'employe_salary_detail'%}" onclick="timeTableAll()">
+            <a href="{% url 'employe_salary_detail' %}" onclick="timeTableAll()">
                 <span class="material-icons-sharp">money</span>
                 <h3>Salary</h3>
-            </a>  
-            
-            <a href="{% url 'employe_leave_list' %}">
+            </a>
+            <a href="{% url 'employe_leave_list' %}" onclick="timeTableAll()">
                 <span class="material-icons-sharp">today</span>
                 <h3>Apply Leave</h3>
             </a>
@@ -50,159 +48,114 @@
         </div>
     </header>
 
-    <!-- Container -->
+    <!-- Sidebar -->
+    <aside class="sidebar-fixed">
+        <div class="profile">
+            <div class="top">
+                <div class="profile-photo">
+                    {% if employe.image %}
+                        <img src="{{ employe.image.url }}" alt="Profile Photo">
+                    {% else %}
+                        <img src="{% static 'images/default.png' %}" alt="Default Profile Photo">
+                    {% endif %}
+                </div>
+                <div class="info">
+                    <p>Hey, <b>{{ employe.name }}</b></p>
+                    <small class="text-muted">Roll No: {{ employe.emp_id }}</small>
+                </div>
+            </div>
+            <div class="about mt-3">
+                <div class="profile-details">
+                    <p><strong>DOB:</strong> {{ employe.date_of_birth }}</p>
+                    <p><strong>Phone:</strong> {{ employe.phone_number }}</p>
+                    <p><strong>Email:</strong> {{ employe.email }}</p>
+                    <p><strong>Address:</strong> {{ employe.address }}</p>
+                    <p><strong>Departments:</strong>
+                        {% for department in departments %}
+                            {{ department.name }}
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
     <div class="container">
-        <!-- Sidebar -->
-        <aside>
-            <div class="profile">
-                <div class="top">
-                    <div class="profile-photo">
-                        {% if employe.image %}
-                            <img src="{{ employe.image.url }}" alt="Profile Photo">
-                        {% else %}
-                            <img src="{% static 'images/default.png' %}" alt="Default Profile Photo">
-                        {% endif %}
-                    </div>
-                    <div class="info">
-                        <p>Hey, <b>{{ employe.name }}</b></p>
-                        <small class="text-muted">Roll No: {{ employe.emp_id }}</small>
-                    </div>
-                </div>
-                <div class="about">
-                    <div class="profile-details">
-                        <!-- Displaying the student's general details -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5>DOB</h5>
-                                <p>{{ employe.date_of_birth }}</p>
-                            </div>
-                        </div>
-                
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5>Contact</h5>
-                                <p>{{ employe.phone_number }}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <h5>Email</h5>
-                                <p>{{ employe.email }}</p>
-                            </div>
-                        </div>
-                
-                        <div class="row">
-                            <div class="col-12">
-                                <h5>Address</h5>
-                                <p>{{ employe.address }}</p>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div class="course-department-session-semester">
-                        <div class="row">
-                            
-                            <!-- Displaying the departments -->
-                            <div class="col-md-3">
-                                <h5>Departments</h5>
-                                <ul>
-                                    {% for department in departments %}
-                                        <li>{{ department.name }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-            
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-        </aside>
-
-        <!-- Main Content -->
         <main>
-            <div class="subjects">
-                <div class="attendance-summary">
-                    {% if attendance_percentage < 75 %}
-                        <!-- Low Attendance -->
-                        <span class="material-icons-sharp" style="color: red;">warning</span>
-                    {% else %}
-                        <!-- High Attendance -->
-                        <span class="material-icons-sharp" style="color: green;">check_circle</span>
-                    {% endif %}
-                    <h3>Attendance</h3>
-                    <h2>{{ attendance_percentage }}%</h2>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card p-3 text-center">
+                        {% if attendance_percentage < 75 %}
+                            <span class="material-icons-sharp text-danger">warning</span>
+                        {% else %}
+                            <span class="material-icons-sharp text-success">check_circle</span>
+                        {% endif %}
+                        
+                        <h5>Attendance</h5>
+                        <h2>{{ attendance_percentage|floatformat:"2" }}%</h2>
+                    </div>
                 </div>
-                
-                <div class="attendance-summary">
-                    <span class="material-icons-sharp" style="color: green;">done</span>
-                    <h3>Total Present</h3>
-                    <h2>{{ total_present }}</h2>
+                <div class="col-md-3">
+                    <div class="card p-3 text-center">
+                        <span class="material-icons-sharp text-success">done</span>
+                        <h5>Total Present</h5>
+                        <h2>{{ total_present }}</h2>
+                    </div>
                 </div>
-                <div class="attendance-summary">
-                    <span class="material-icons-sharp" style="color: red;">block</span>
-                    <h3>Total Absent</h3>
-                    <h2>{{ total_absent }}</h2>
+                <div class="col-md-3">
+                    <div class="card p-3 text-center">
+                        <span class="material-icons-sharp text-danger">block</span>
+                        <h5>Total Absent</h5>
+                        <h2>{{ total_absent }}</h2>
+                    </div>
                 </div>
-                <div class="attendance-summary">
-                    <span class="material-icons-sharp" style="color: orange;">schedule</span>
-                    <h3>Total Late</h3>
-                    <h2>{{ total_late_count }}</h2>
+                <div class="col-md-3">
+                    <div class="card p-3 text-center">
+                        <span class="material-icons-sharp text-warning">schedule</span>
+                        <h5>Total Late</h5>
+                        <h2>{{ total_late_count }}</h2>
+                    </div>
                 </div>
             </div>
-            
 
-          <!-- Attendance Records Table -->
-<div class="timetable" id="timetable">
-    <div>
-        <h2>Recent Attendance</h2>
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Check-in Time</th>
-                <th>Check-out Time</th>
-                <th>Duration</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for record in attendance_records %}
-            <tr>
-                <td>{{ record.date }}</td>
-                <td>{{ record.status }}</td>
-                <td>
-                    {% if record.check_in_time %}
-                        {{ record.check_in_time|date:"h:i:s A" }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-                <td>
-                    {% if record.check_out_time %}
-                        {{ record.check_out_time|date:"h:i:s A" }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-                <td>
-                    {% if record.check_in_time and record.check_out_time %}
-                        {{ record.calculate_duration }}
-                    {% else %}
-                        Not Checked Out
-                    {% endif %}
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5">No attendance records found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-
-        
+            <div class="timetable mt-1">
+                <h2>Recent Attendance</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in attendance_records %}
+                            <tr>
+                                <td>{{ record.date }}</td>
+                                <td>{{ record.status }}</td>
+                                <td>{{ record.check_in_time|default:"-" }}</td>
+                                <td>{{ record.check_out_time|default:"-" }}</td>
+                                <td>
+                                    {% if record.check_in_time and record.check_out_time %}
+                                        {{ record.calculate_duration }}
+                                    {% else %}
+                                        Not Checked Out
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5">No attendance records found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </main>
 
         <!-- Right Sidebar -->
@@ -225,10 +178,258 @@
                 </div>
             </div>
         </div>
-        
-        </div>
     </div>
 
     <script src="{% static 'app.js' %}"></script>
 </body>
+<style>
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+    --color-primary: #7380ec;
+    --color-danger: #ff7782;
+    --color-white: #ffffff;
+    --color-info:rgb(132, 162, 200);
+    --color-background: #f6f6f9;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--color-background);
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* Header (Navbar) */
+.main-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.05);
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar-logo h2 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.navbar a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: var(--color-info);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.navbar a:hover,
+.navbar a.active {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.navbar h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* Sidebar */
+.sidebar-fixed {
+    position: fixed;
+    top: 75px;
+    left: 0;
+    width: 225px;
+    height: 80vh;
+    border-radius: 10px;
+    padding: 2rem 1rem;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+    z-index: 900;
+    overflow-y: auto;
+}
+
+.profile-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.profile-photo img {
+    width: 100%;
+    height: auto;
+}
+
+.profile .info p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--color-info);
+}
+
+.profile .info b {
+    color: #333;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 12px;
+}
+/* Main container */
+.container {
+    margin-left: 250px;
+    margin-top: 80px;
+    padding: 30px;
+    min-height: 80vh;
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: rgb(94, 127, 161);
+}
+
+.card {
+    background: #fff;
+    border-radius: 10px;
+    min-width:150px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Scrollbar for sidebar */
+.sidebar-fixed::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-fixed::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+.right {
+    position: relative;
+    margin-left: 900px;
+    width: 350px;
+    margin-top: -500px;
+}
+.announcements {
+    background: rgba(255, 255, 255, 0.71);
+    padding: 1.5rem;
+    border-radius: 10px;
+    /*box-shadow: 0 2px 8px rgba(0,0,0,0.05);*/
+}
+
+.announcements h2 {
+    margin-bottom: 1rem;
+}
+
+.announcements .message {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.timetable div {
+    position: relative;
+    width: 800px;
+    display: flex;
+    align-items: center;
+    border-collapse: separate;
+    /* padding: 5px; */
+    border-radius: 10px;
+    justify-content: space-between;
+}
+
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    width: 700px;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: 10px;
+    margin-left: 60px;
+    margin-bottom: 30px;
+    gap:15px;
+}
+
+.mt-1 {
+    margin-top: 4rem!important;
+    margin-left: 40px;
+}
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .main-navbar {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+    }
+
+    .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .container {
+        margin-left: 0;
+        margin-top: 120px;
+    }
+
+    .sidebar-fixed {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: 0;
+        left: 0;
+        box-shadow: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .col-md-3 {
+        flex: 0 0 auto;
+        width: 40%;
+    }
+}
+
+.row>* {
+    flex-shrink: 0;
+    width: 40%;
+    max-width: 40%;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    margin-top;
+}
+</style>
+
 </html>

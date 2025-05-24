@@ -106,7 +106,6 @@ header .logo img{
 header,
 header .navbar{
     display: flex;
-    align-items: center;
     justify-content: flex-end;
     padding: 0 3rem;
     color: var(--color-info);
@@ -217,6 +216,7 @@ main .subjects > div{
     margin-top: 1rem;
     box-shadow: var(--box-shadow);
     transition: all 300ms ease;
+    width: 200px;
 }
 main .subjects > div:hover{
     box-shadow: none;
@@ -346,7 +346,12 @@ main .timetable.active .closeBtn{
 
 
 /* Right  */
-.right{margin-top: 2.2rem;padding-left: 1.5rem;}
+.right{
+    margin-top: 2.2rem;
+    padding-left: 1.5rem;
+    width: 250px;
+    height: 250px;
+}
 
 .right .announcements h2{margin-bottom: .8rem;}
 .right .announcements .updates{
@@ -406,7 +411,7 @@ main .timetable.active .closeBtn{
         gap: 1;
     }
     main .timetable{
-        width: 150%;
+        width: 230%;
         position: absolute;
         padding: 4rem 0 0 0;
     }
@@ -443,7 +448,7 @@ main .timetable.active .closeBtn{
         width: 100%;
     }
     main .timetable table{
-        width: 100%;
+        width: 200%;
         margin: 0;
     }
     .right{
@@ -527,4 +532,143 @@ main .timetable.active .closeBtn{
     font-size: 18px;
     color: #999;
     font-style: italic;
+}
+/* Navbar cố định trên cùng */
+.main-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 60px;
+    background: var(--color-background);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 0 2rem;
+}
+.navbar-logo {
+    display: flex;
+    gap: 1rem;
+}
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    margin-left: 2rem;
+    gap: 1.5rem;
+    flex: 1;
+}
+.navbar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-info);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+    font-weight: 500;
+}
+.navbar-menu a.active, .navbar-menu a:hover {
+    background: var(--color-primary);
+    color: #fff;
+}
+.navbar-menu a.active h3, .navbar-menu a:hover h3 {
+    color: #fff;
+}
+.navbar-menu h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: inherit;
+}
+
+/* Sidebar cố định bên trái */
+.sidebar-fixed {
+    position: fixed;
+    top: 60px; /* dưới navbar */
+    left: 0;
+    width: 220px;
+    height: calc(100vh - 60px);
+    background: var(--color-white);
+    box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+    padding: 2rem 1rem 1rem 1rem;
+    z-index: 900;
+    overflow-y: auto;
+}
+
+/* Container chỉnh lại để không bị che bởi navbar và sidebar */
+.container {
+    margin-left: 240px; /* Để không bị sidebar che */
+    margin-top: 80px;   /* Để không bị navbar che */
+    padding: 30px;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: auto;
+}
+.table-responsive {
+    margin-top: 20px;
+    flex-grow: 1;
+}
+.filter-container .form-control {
+    width: 30%;
+    max-width: 200px;
+    display: inline-block;
+    margin-left: 380px;
+}
+.filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+.table thead th {
+    vertical-align: middle;
+    text-align: center;
+    background: linear-gradient(135deg, rgb(121, 179, 241), rgb(143, 192, 244));
+    color: white;
+    border: none;
+}
+.table tbody tr:hover {
+    background-color: #eef5ff;
+    transition: 0.3s;
+}
+.table td, .table th {
+    vertical-align: middle;
+    text-align: center;
+}
+.heading {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: bold;
+    color: rgb(20, 83, 150);
+}
+.back {
+    margin-top: 50px;
+    padding: 10px 0;
+    text-align: left;
+}
+.back-icon {
+    padding: 10px;
+    font-size: 1.8em;
+    color: rgb(160, 194, 231);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.back-icon:hover {
+    color: rgb(83, 110, 139);
+}
+.btn-custom {
+    background: linear-gradient(135deg,rgb(184, 212, 241),rgb(86, 124, 164));
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+.btn-custom:hover {
+    background:rgb(186, 193, 200);
 }

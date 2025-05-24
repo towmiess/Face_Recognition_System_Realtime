@@ -10,16 +10,16 @@
 <style>
     /* General Body Styling */
     body {
-        background-color: #000; /* Black background */
-        color: #fff; /* White text for contrast */
-        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #d0e5ee, #b5dff1, #d0d8ff);
+        color: #0e455f;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
     }
 
     /* Container Styling */
     .container {
         max-width: 1000px; /* Smaller container width */
         margin: 30px auto;
-        background: #333; /* Dark background for container */
+        background: rgba(255, 255, 255, 0.3);
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* Soft shadow for depth */
@@ -39,7 +39,9 @@
         width: 100%;
         border-collapse: collapse;
         margin: 20px 0;
-        background: #222; /* Dark background for table */
+        background: rgba(255, 255, 255, 0.42);
+        padding: 10px;
+        border-radius: 10px;
         font-size: 14px; /* Smaller font size */
         text-align: left;
     }
@@ -51,8 +53,8 @@
     }
 
     table th {
-        background-color: #4caf50; /* Green header */
-        color: #fff; /* White text */
+        background-color:rgb(195, 228, 196); /* Green header */
+        color: hsl(215, 38.60%, 19.80%);
         text-transform: uppercase;
         font-weight: bold;
         text-align: center;
@@ -112,7 +114,7 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody style = "background-color: #daf7ffc7;">
             {% for employe in employes %}
             <tr>
                 <td style= "text-align: left;">{{ employe.name }}</td>

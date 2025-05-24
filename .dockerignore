@@ -1,0 +1,30 @@
+# Bỏ thư mục ảo hóa và cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+
+# Bỏ môi trường ảo hóa
+.venv/
+env/
+venv/
+
+# Bỏ file môi trường, secret
+.env
+#*.sqlite3
+
+# Bỏ thư mục Git
+.git/
+.gitignore
+
+# Bỏ các file hệ thống không cần thiết
+.DS_Store
+Thumbs.db
+
+# Bỏ log
+*.log
+
+# Bỏ thư mục media/static có thể tạo lại
+static/
+media/
